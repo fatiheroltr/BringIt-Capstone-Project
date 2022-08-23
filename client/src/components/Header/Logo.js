@@ -24,7 +24,7 @@ const Slogan = styled.span`
   font-size: 20px;
   letter-spacing: -0.04em;
   margin-top: 54px;
-  margin-left: 15px;
+  margin-left: 12px;
 `;
 
 export default Logo;

@@ -1,6 +1,6 @@
 import Header from "./Header/Header";
 import Hero from "./Hero/Hero";
-import CategoryBar from "./CategoryBar";
+import CategoryBar from "./CategoryBar/CategoryBar";
 
 const Home = () => {
   return (

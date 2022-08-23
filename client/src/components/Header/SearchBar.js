@@ -30,7 +30,7 @@ const Search = styled.input`
   box-sizing: border-box;
   height: 55px;
   width: 100%;
-  background: var(--input-color);
+  background: var(--light-color);
   border-radius: 125px;
   border: none;
   padding-left: 55px;

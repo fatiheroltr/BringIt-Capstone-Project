@@ -4,7 +4,7 @@ export default createGlobalStyle`
     :root {
       --primary-color: #28485E;
       --accent-color: #F05A28;
-      --input-color: #f7f7ff;
+      --light-color: #f7f7ff;
       
 
     }
