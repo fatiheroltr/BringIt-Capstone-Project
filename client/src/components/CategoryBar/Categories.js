@@ -7,7 +7,7 @@ import bakery from "../../assets/dessert-icon.png";
 import coffee from "../../assets/coffee-tea-icon.png";
 import drinks from "../../assets/drinks-icon.png";
 
-export const Categories = [
+export const categories = [
   { id: 1, name: "Hamburger", imgSrc: hamburger },
   { id: 2, name: "Pizza", imgSrc: pizza },
   { id: 3, name: "Italian", imgSrc: italian },

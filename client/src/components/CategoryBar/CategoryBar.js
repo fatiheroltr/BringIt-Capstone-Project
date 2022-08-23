@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { Categories } from "./Categories";
+import { categories } from "./categories";
 
 const CategoryBar = () => {
   return (
     <Wrapper>
-      {Categories.map((category) => {
+      {categories.map((category) => {
         return (
           <Circle key={category.id}>
             <CategoryImage src={category.imgSrc} />
