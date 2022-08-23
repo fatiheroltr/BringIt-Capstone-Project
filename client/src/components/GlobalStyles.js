@@ -6,14 +6,7 @@ export default createGlobalStyle`
       --accent-color: #F05A28;
       --input-color: #f7f7ff;
       
-      --grey: #A5A5A5;
-      --light-grey: #C1C1C1;
-      --lightest-grey: #F5F5F5;
-      --orange: #FED79C;
-      --green: #75C269;
-      --pink: #DB6A86;
-      --hover-black: rgb(0, 0, 0, 0.3);
-      --border : #E6E6E6;
+
     }
 
     html, body, div, span, applet, object, iframe,
@@ -57,8 +50,7 @@ export default createGlobalStyle`
         content: none;
     }
     h1, h2, h3 {
-      color: var(--primary-color);
-      font-family: var(--font-family);
+
     }
    
 

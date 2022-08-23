@@ -1,4 +1,4 @@
-import LogoSrc from "../assets/bringit-logo.png";
+import LogoSrc from "../../assets/bringit-logo.png";
 import styled from "styled-components";
 
 const Logo = () => {

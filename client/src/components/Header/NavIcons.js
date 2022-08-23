@@ -1,21 +1,19 @@
 import styled from "styled-components";
-import {
-  IoCartOutline,
-  IoChatboxEllipsesOutline,
-  IoPersonCircleOutline,
-} from "react-icons/io5";
+import CartIconSrc from "../../assets/cart-icon.svg";
+import MessageIconSrc from "../../assets/message-icon.svg";
+import ProfileIconSrc from "../../assets/profile-icon.svg";
 
 const NavIcons = () => {
   return (
     <Wrapper>
       <CartIconContainer>
-        <CartIcon />
+        <CartIcon src={CartIconSrc} />
       </CartIconContainer>
       <MessageIconContainer>
-        <MessageIcon />
+        <MessageIcon src={MessageIconSrc} />
       </MessageIconContainer>
       <ProfileIconContainer>
-        <ProfileIcon />
+        <ProfileIcon src={ProfileIconSrc} />
       </ProfileIconContainer>
     </Wrapper>
   );
@@ -47,22 +45,22 @@ const CartIconContainer = styled.div`
   }
 `;
 
-const CartIcon = styled(IoCartOutline)`
+const CartIcon = styled.img`
   width: 30px;
-  height: 30px;
+  height: 27px;
 `;
 
 const MessageIconContainer = styled.div`
   position: relative;
 
   &::after {
-    content: "3";
+    content: "1";
     /* content: attr(value); */
     height: 16px;
     background-color: var(--accent-color);
     position: absolute;
     right: -5px;
-    top: -4px;
+    top: -6px;
     text-align: center;
     border-radius: 4px;
     color: #fff;
@@ -72,16 +70,16 @@ const MessageIconContainer = styled.div`
   }
 `;
 
-const MessageIcon = styled(IoChatboxEllipsesOutline)`
-  width: 28px;
-  height: 28px;
+const MessageIcon = styled.img`
+  width: 24px;
+  height: 24px;
 `;
 
 const ProfileIconContainer = styled.div``;
 
-const ProfileIcon = styled(IoPersonCircleOutline)`
-  width: 34px;
-  height: 34px;
+const ProfileIcon = styled.img`
+  width: 28px;
+  height: 28px;
 `;
 
 export default NavIcons;
