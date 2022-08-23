@@ -1,15 +1,21 @@
-import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./Home";
+import GlobalStyles from "./GlobalStyles";
+import styled from "styled-components";
 
 const App = () => {
-  const [test, setTest] = useState(null);
-
-  useEffect(() => {
-    fetch("/test")
-      .then((res) => res.json())
-      .then((data) => setTest(data));
-  }, []);
-
-  return <div>{test ? test : `TEST DOESNT WORK!`}</div>;
+  return (
+    <BrowserRouter>
+      <GlobalStyles />
+      <Wrapper>
+        <Routes>
+          <Route exact path="/" element={<Home />}></Route>
+        </Routes>
+      </Wrapper>
+    </BrowserRouter>
+  );
 };
+
+const Wrapper = styled.div``;
 
 export default App;
