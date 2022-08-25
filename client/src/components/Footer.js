@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Logo from "./Header/Logo";
-import FacebookIconSrc from "../assets/face.png";
-import TwitterIconSrc from "../assets/twitter.png";
-import LinkedinIconSrc from "../assets/linkedin.png";
-import InstgramIconSrc from "../assets/insta.png";
+import FacebookIconSrc from "../assets/icons/face.png";
+import TwitterIconSrc from "../assets/icons/twitter.png";
+import LinkedinIconSrc from "../assets/icons/linkedin.png";
+import InstgramIconSrc from "../assets/icons/insta.png";
 
 const Footer = () => {
   return (

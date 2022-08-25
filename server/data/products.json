@@ -1,0 +1,34 @@
+[
+    {
+      "_id": 4531,
+      "name": "Margherita",
+      "price": 11,
+      "category": "pizza",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "imageSrc": "../assets/products/margherita-pizza.png"
+    },
+    {
+      "_id": 4532,
+      "name": "Caprese",
+      "price": 12,
+      "category": "pizza",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "imageSrc": "../assets/products/caprese-pizza.png"
+    },
+    {
+      "_id": 4533,
+      "name": "Classic",
+      "price": 11,
+      "category": "pizza",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "imageSrc": "../assets/products/classic-pizza.png"
+    },
+    {
+      "_id": 4534,
+      "name": "Quattro Formaggi",
+      "price": 13,
+      "category": "pizza",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "imageSrc": "client/src/assets/products/quattro-pizza.png"
+    }
+  ]

@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import CartIconSrc from "../../assets/cart-icon.svg";
-import MessageIconSrc from "../../assets/message-icon.svg";
-import ProfileIconSrc from "../../assets/profile-icon.svg";
+import CartIconSrc from "../../assets/icons/cart-icon.svg";
+import MessageIconSrc from "../../assets/icons/message-icon.svg";
+import ProfileIconSrc from "../../assets/icons/profile-icon.svg";
 
 const NavIcons = () => {
   return (

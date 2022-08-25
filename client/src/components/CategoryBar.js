@@ -1,21 +1,33 @@
 import { Link } from "react-router-dom";
-import { categories } from "./data";
+import { useEffect, useState } from "react";
 
 import styled from "styled-components";
 
 const CategoryBar = () => {
+  const [categories, setCategories] = useState();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await fetch("/api/get-categories");
+      const result = await response.json();
+      setCategories(result.data);
+    };
+    fetchCategories();
+  }, []);
+
   return (
     <Wrapper>
-      {categories.map((category) => {
-        return (
-          <Link to={category.name}>
-            <Circle key={category.id}>
-              <CategoryImage src={category.imgSrc} />
-              <CategoryName>{category.name}</CategoryName>
-            </Circle>
-          </Link>
-        );
-      })}
+      {categories &&
+        categories.map((category) => {
+          return (
+            <Link to={category.name} key={category._id}>
+              <Circle>
+                <CategoryImage src={category.imgSrc} />
+                <CategoryName>{category.name}</CategoryName>
+              </Circle>
+            </Link>
+          );
+        })}
     </Wrapper>
   );
 };

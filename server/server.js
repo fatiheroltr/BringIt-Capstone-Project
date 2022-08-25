@@ -5,6 +5,8 @@ const morgan = require("morgan");
 
 const PORT = 4000;
 
+const { getCategories, getProducts } = require("./handlers");
+
 express()
   .use(function (req, res, next) {
     res.header(
@@ -24,6 +26,7 @@ express()
   .use("/", express.static(__dirname + "/"))
 
   /// REST endpoints
-  .get("/test", (req, res) => res.status(200).json("HELLO WORLD!"))
+  .get("/api/get-categories", getCategories)
+  .get("/api/get-products", getProducts)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
