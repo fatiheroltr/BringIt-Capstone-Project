@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./Home";
+import Home from "../pages/Home";
 import GlobalStyles from "./GlobalStyles";
 import styled from "styled-components";
 

@@ -5,6 +5,7 @@ export default createGlobalStyle`
       --primary-color: #28485E;
       --accent-color: #F05A28;
       --light-color: #f7f7ff;
+      --teal-color: #008EA7
       
 
     }

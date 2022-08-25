@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import HeroImageSrc from "../../assets/figure.png";
+import HeroImageSrc from "../assets/figure.png";
 
 const Hero = () => {
   return (
@@ -25,11 +25,13 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 50px;
+  margin: 100px;
 `;
 
 const HeroImage = styled.img`
   width: 574px;
   margin-right: 55px;
+  align-self: center;
 `;
 
 const HeroText = styled.div``;

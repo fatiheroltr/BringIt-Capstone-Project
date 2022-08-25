@@ -1,15 +1,19 @@
+import { Link } from "react-router-dom";
+import { categories } from "./data";
+
 import styled from "styled-components";
-import { categories } from "./categories";
 
 const CategoryBar = () => {
   return (
     <Wrapper>
       {categories.map((category) => {
         return (
-          <Circle key={category.id}>
-            <CategoryImage src={category.imgSrc} />
-            <CategoryName>{category.name}</CategoryName>
-          </Circle>
+          <Link to={category.name}>
+            <Circle key={category.id}>
+              <CategoryImage src={category.imgSrc} />
+              <CategoryName>{category.name}</CategoryName>
+            </Circle>
+          </Link>
         );
       })}
     </Wrapper>
