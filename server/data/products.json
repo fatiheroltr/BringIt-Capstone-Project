@@ -5,7 +5,9 @@
       "price": 11,
       "category": "pizza",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
-      "imageSrc": "../assets/products/margherita-pizza.png"
+      "imageSrc": "./assets/products/margherita-pizza.png",
+      "store": "Pizzeria Napoli",
+      "stock": 9
     },
     {
       "_id": 4532,
@@ -13,7 +15,9 @@
       "price": 12,
       "category": "pizza",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
-      "imageSrc": "../assets/products/caprese-pizza.png"
+      "imageSrc": "./assets/products/caprese-pizza.png",
+      "store": "Pizzeria Napoli",
+      "stock": 9
     },
     {
       "_id": 4533,
@@ -21,7 +25,9 @@
       "price": 11,
       "category": "pizza",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
-      "imageSrc": "../assets/products/classic-pizza.png"
+      "imageSrc": "./assets/products/classic-pizza.png",
+      "store": "Pizzeria Napoli",
+      "stock": 9
     },
     {
       "_id": 4534,
@@ -29,6 +35,18 @@
       "price": 13,
       "category": "pizza",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
-      "imageSrc": "client/src/assets/products/quattro-pizza.png"
+      "imageSrc": "./assets/products/quattro-pizza.png",
+      "store": "Pizzeria Napoli",
+      "stock": 9
+    },
+    {
+      "_id": 4535,
+      "name": "Tiramisu",
+      "price": 6.95,
+      "category": "bakery",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "imageSrc": "./assets/products/tiramisu.png",
+      "store": "Pizzeria Napoli",
+      "stock": 9
     }
   ]

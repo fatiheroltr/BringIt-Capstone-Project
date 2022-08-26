@@ -20,7 +20,7 @@ const CategoryBar = () => {
       {categories &&
         categories.map((category) => {
           return (
-            <Link to={category.name} key={category._id}>
+            <Link to={category.name.toLowerCase()} key={category._id}>
               <Circle>
                 <CategoryImage src={category.imgSrc} />
                 <CategoryName>{category.name}</CategoryName>

@@ -11,15 +11,16 @@ const batchImport = async () => {
   await client.connect();
   const db = client.db("CAPSTONE");
 
-  const categoriesData = await db
-    .collection("categories")
-    .insertMany(categories);
-  const restaurantsData = await db
-    .collection("restaurants")
-    .insertMany(restaurants);
+  // const categoriesData = await db
+  //   .collection("categories")
+  //   .insertMany(categories);
+  // const restaurantsData = await db
+  //   .collection("restaurants")
+  //   .insertMany(restaurants);
   const productsData = await db.collection("products").insertMany(products);
 
-  categoriesData && restaurantsData && productsData
+  // categoriesData && restaurantsData &&
+  productsData
     ? console.log("Data imported successfully! ")
     : console.log("ERROR!");
 
