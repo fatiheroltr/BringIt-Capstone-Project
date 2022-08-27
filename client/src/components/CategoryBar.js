@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { extractImageUrl } from "../utils";
 
 import styled from "styled-components";
 
@@ -20,9 +21,14 @@ const CategoryBar = () => {
       {categories &&
         categories.map((category) => {
           return (
-            <Link to={category.name.toLowerCase()} key={category._id}>
+            <Link
+              to={`category/${category.name.toLowerCase()}`}
+              key={category._id}
+            >
               <Circle>
-                <CategoryImage src={category.imgSrc} />
+                <CategoryImage
+                  src={extractImageUrl(category._id, "png", "category-icon")}
+                />
                 <CategoryName>{category.name}</CategoryName>
               </Circle>
             </Link>

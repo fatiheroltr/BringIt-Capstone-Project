@@ -1,52 +1,72 @@
 [
     {
       "_id": 4531,
-      "name": "Margherita",
+      "name": "Margherita Pizza",
       "price": 11,
       "category": "pizza",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
-      "imageSrc": "./assets/products/margherita-pizza.png",
       "store": "Pizzeria Napoli",
-      "stock": 9
+      "stock": 9,
+      "store_id": 453
     },
     {
       "_id": 4532,
-      "name": "Caprese",
+      "name": "Caprese Pizza",
       "price": 12,
       "category": "pizza",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
-      "imageSrc": "./assets/products/caprese-pizza.png",
       "store": "Pizzeria Napoli",
-      "stock": 9
+      "stock": 9,
+      "store_id": 453
     },
     {
       "_id": 4533,
-      "name": "Classic",
+      "name": "Classic Pizza",
       "price": 11,
       "category": "pizza",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
-      "imageSrc": "./assets/products/classic-pizza.png",
       "store": "Pizzeria Napoli",
-      "stock": 9
+      "stock": 9,
+      "store_id": 453
     },
     {
       "_id": 4534,
-      "name": "Quattro Formaggi",
+      "name": "Quattro Formaggi Pizza",
       "price": 13,
       "category": "pizza",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
-      "imageSrc": "./assets/products/quattro-pizza.png",
       "store": "Pizzeria Napoli",
-      "stock": 9
+      "stock": 9,
+      "store_id": 453
     },
     {
       "_id": 4535,
+      "name": "Funghi Pizza",
+      "price": 11,
+      "category": "pizza",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Pizzeria Napoli",
+      "stock": 9,
+      "store_id": 453
+    },
+    {
+      "_id": 4536,
       "name": "Tiramisu",
       "price": 6.95,
-      "category": "bakery",
+      "category": "pastry",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
-      "imageSrc": "./assets/products/tiramisu.png",
       "store": "Pizzeria Napoli",
-      "stock": 9
+      "stock": 9,
+      "store_id": 453
+    },
+    {
+      "_id": 4537,
+      "name": "Cannoli",
+      "price": 6.95,
+      "category": "pastry",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Pizzeria Napoli",
+      "stock": 9,
+      "store_id": 453
     }
   ]

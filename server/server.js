@@ -5,7 +5,12 @@ const morgan = require("morgan");
 
 const PORT = 4000;
 
-const { getCategories, getProductsByCategory } = require("./handlers");
+const {
+  getCategories,
+  getProductsByCategory,
+  getRestaurantById,
+  getProductsByStore,
+} = require("./handlers");
 
 express()
   .use(function (req, res, next) {
@@ -28,5 +33,7 @@ express()
   /// REST endpoints
   .get("/api/get-categories", getCategories)
   .get("/api/get-products-by-category/:category", getProductsByCategory)
+  .get("/api/get-restaurant-by-id/:id", getRestaurantById)
+  .get("/api/get-products-by-store/:id", getProductsByStore)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));

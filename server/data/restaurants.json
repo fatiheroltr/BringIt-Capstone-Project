@@ -1,3 +1,3 @@
 [
-    { "_id": 453, "name": "Pizzeria Napoli", "products": [4531, 4532, 4533, 4534] }
+    { "_id": 453, "name": "Pizzeria Napoli", "products": [4531, 4532, 4533, 4534], "businessHours": "9am-5pm" }
 ]

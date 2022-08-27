@@ -1,13 +1,89 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
+import ProductCard from "../components/ProductCard";
+import LoadingCircle from "../components/LoadingCircle";
+import { extractImageUrl, isStoreOpen } from "../utils";
 
 import styled from "styled-components";
 
 const Restaurant = () => {
+  const { id } = useParams();
+  const [restaurant, setRestaurant] = useState();
+  const [products, setProducts] = useState();
+  const uniqueCategories = products && [
+    ...new Set(products.map((product) => product.category)),
+  ];
+
+  useEffect(() => {
+    const fetchRestaurant = async () => {
+      const restaurantResponse = await fetch(`/api/get-restaurant-by-id/${id}`);
+      const restaurantResult = await restaurantResponse.json();
+      setRestaurant(restaurantResult.data);
+
+      const productsResponse = await fetch(`/api/get-products-by-store/${id}`);
+      const productsResult = await productsResponse.json();
+      setProducts(productsResult.data);
+    };
+    fetchRestaurant();
+  }, []);
+
   return (
     <Wrapper>
       <Header />
-
+      {restaurant && products ? (
+        <>
+          <BannerContainer bannerSrc={extractImageUrl(id, "jpg", "banner")}>
+            <Logo src={extractImageUrl(id, "png", "logo")} />
+            <StoreInfo>
+              <StoreName>{restaurant.name}</StoreName>
+              <StoreHours>
+                {isStoreOpen(
+                  restaurant.operation_start,
+                  restaurant.operation_end
+                )
+                  ? "OPEN"
+                  : "CLOSED"}{" "}
+                - {restaurant.operation_start + ":00"} /{" "}
+                {restaurant.operation_end + ":00"}
+              </StoreHours>
+            </StoreInfo>
+          </BannerContainer>
+          <Content>
+            {uniqueCategories.map((category) => {
+              return (
+                <div key={category}>
+                  <CategoryName>
+                    {category.substring(0, 1).toUpperCase() +
+                      category.substring(1)}
+                  </CategoryName>
+                  <ProductsContainer>
+                    {products.map((product) => {
+                      return (
+                        product.category === category && (
+                          <ProductCard
+                            productData={product}
+                            // disable={
+                            //   !isStoreOpen(
+                            //     restaurant.operation_start,
+                            //     restaurant.operation_end
+                            //   )
+                            // }
+                            key={product._id}
+                          />
+                        )
+                      );
+                    })}
+                  </ProductsContainer>
+                </div>
+              );
+            })}
+          </Content>
+        </>
+      ) : (
+        <LoadingCircle circleSize={40} />
+      )}
       <Footer />
     </Wrapper>
   );
@@ -17,6 +93,86 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const Content = styled.div`
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+`;
+
+const ProductsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 75px;
+  margin: 30px 0;
+  grid-row-gap: 60px;
+  margin-bottom: 60px;
+`;
+
+const BannerContainer = styled.div`
+  max-width: 1440px;
+  width: 100%;
+  height: 320px;
+  background-image: url(${(props) => props.bannerSrc});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 320px;
+    background: rgba(255, 255, 255, 0);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0) 66%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
+  }
+`;
+
+const Logo = styled.img`
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  left: 70px;
+  top: 175px;
+  z-index: 1;
+`;
+
+const StoreInfo = styled.span`
+  display: flex;
+  align-items: baseline;
+  position: absolute;
+  z-index: 2;
+  color: #fff;
+  bottom: 20px;
+  left: 300px;
+`;
+
+const StoreName = styled.span`
+  font-size: 35px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+`;
+
+const StoreHours = styled.span`
+  font-size: 16px;
+  letter-spacing: -0.04em;
+  margin-left: 20px;
+`;
+
+const CategoryName = styled.span`
+  width: 100%;
+  color: var(--primary-color);
+  font-size: 30px;
+  font-weight: 700;
 `;
 
 export default Restaurant;
