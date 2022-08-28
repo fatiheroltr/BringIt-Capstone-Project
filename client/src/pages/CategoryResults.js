@@ -1,14 +1,16 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { RestaurantsContext } from "../context/RestaurantsContext";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
-import LoadingCircle from "../components/LoadingCircle";
-
+import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
+import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 
 const CategoryResults = () => {
   const { category } = useParams();
+  const { restaurants, isRestaurantsLoaded } = useContext(RestaurantsContext);
   const [products, setProducts] = useState();
 
   useEffect(() => {
@@ -23,14 +25,29 @@ const CategoryResults = () => {
   return (
     <Wrapper>
       <Header />
-      {products ? (
+      <CategoryName>
+        {category.substring(0, 1).toUpperCase() + category.substring(1)}
+      </CategoryName>
+      {products && isRestaurantsLoaded ? (
         <Content>
           {products.map((product) => {
-            return <ProductCard productData={product} key={product._id} />;
+            return (
+              <ProductCard
+                productData={product}
+                restaurantData={restaurants.find(
+                  (restaurant) => restaurant._id === product.store_id
+                )}
+                key={product._id}
+              />
+            );
           })}
         </Content>
       ) : (
-        <LoadingCircle circleSize={40} />
+        <Content>
+          {[...Array(8)].map((e, i) => (
+            <ProductCardSkeleton key={i} />
+          ))}
+        </Content>
       )}
       <Footer />
     </Wrapper>
@@ -49,6 +66,14 @@ const Content = styled.div`
   grid-column-gap: 75px;
   margin-bottom: 100px;
   grid-row-gap: 60px;
+`;
+
+const CategoryName = styled.span`
+  width: 1297px;
+  color: var(--primary-color);
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 30px;
 `;
 
 export default CategoryResults;

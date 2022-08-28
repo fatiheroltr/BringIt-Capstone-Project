@@ -1,32 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import LoadingCircle from "../components/LoadingCircle";
+import { RestaurantsContext } from "../context/RestaurantsContext";
 import { extractImageUrl, isStoreOpen } from "../utils";
-
+import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
+import RestaurantBannerSkeleton from "../components/Skeletons/RestaurantBannerSkeleton";
 import styled from "styled-components";
 
 const Restaurant = () => {
   const { id } = useParams();
-  const [restaurant, setRestaurant] = useState();
+  const { restaurants, isRestaurantsLoaded } = useContext(RestaurantsContext);
+  const restaurant =
+    isRestaurantsLoaded &&
+    restaurants.find((restaurant) => restaurant._id === parseInt(id));
+
   const [products, setProducts] = useState();
   const uniqueCategories = products && [
     ...new Set(products.map((product) => product.category)),
   ];
 
   useEffect(() => {
-    const fetchRestaurant = async () => {
-      const restaurantResponse = await fetch(`/api/get-restaurant-by-id/${id}`);
-      const restaurantResult = await restaurantResponse.json();
-      setRestaurant(restaurantResult.data);
-
-      const productsResponse = await fetch(`/api/get-products-by-store/${id}`);
-      const productsResult = await productsResponse.json();
-      setProducts(productsResult.data);
+    const fetchProducts = async () => {
+      const response = await fetch(`/api/get-products-by-store/${id}`);
+      const result = await response.json();
+      setProducts(result.data);
     };
-    fetchRestaurant();
+    fetchProducts();
   }, []);
 
   return (
@@ -64,12 +66,7 @@ const Restaurant = () => {
                         product.category === category && (
                           <ProductCard
                             productData={product}
-                            // disable={
-                            //   !isStoreOpen(
-                            //     restaurant.operation_start,
-                            //     restaurant.operation_end
-                            //   )
-                            // }
+                            restaurantData={restaurant}
                             key={product._id}
                           />
                         )
@@ -82,7 +79,14 @@ const Restaurant = () => {
           </Content>
         </>
       ) : (
-        <LoadingCircle circleSize={40} />
+        <>
+          <RestaurantBannerSkeleton />
+          <ProductsContainer>
+            {[...Array(8)].map((e, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </ProductsContainer>
+        </>
       )}
       <Footer />
     </Wrapper>

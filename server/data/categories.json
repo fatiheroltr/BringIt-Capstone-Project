@@ -1,34 +1,32 @@
 [
   {
     "_id": 1,
-    "name": "Hamburger",
-    "imgSrc": "../assets/category-icons/hamburger-icon.png"
+    "name": "Hamburger"
   },
-  { "_id": 2, "name": "Pizza", "imgSrc": "../assets/category-icons/pizza-icon.png" },
+  { "_id": 2, "name": "Pizza"},
   {
     "_id": 3,
-    "name": "Italian",
-    "imgSrc": "../assets/category-icons/italian-icon.png"
+    "name": "Kebab"
   },
-  { "_id": 4, "name": "Asian", "imgSrc": "../assets/category-icons/asian-icon.png" },
+  { "_id": 4, "name": "Asian"},
   {
     "_id": 5,
-    "name": "Mexican",
-    "imgSrc": "../assets/category-icons/mexican-icon.png"
+    "name": "Sandwich"
   },
   {
     "_id": 6,
-    "name": "Pastry",
-    "imgSrc": "../assets/category-icons/dessert-icon.png"
+    "name": "Snacks"
   },
   {
     "_id": 7,
-    "name": "Coffee & Tea",
-    "imgSrc": "../assets/category-icons/coffee-tea-icon.png"
+    "name": "Dessert"
   },
   {
     "_id": 8,
-    "name": "Cold Drinks",
-    "imgSrc": "../assets/category-icons/drinks-icon.png"
+    "name": "Coffee & Tea"
+  },
+  {
+    "_id": 9,
+    "name": "Cold Drinks"
   }
 ]

@@ -10,6 +10,7 @@ const {
   getProductsByCategory,
   getRestaurantById,
   getProductsByStore,
+  getRestaurants,
 } = require("./handlers");
 
 express()
@@ -33,6 +34,7 @@ express()
   /// REST endpoints
   .get("/api/get-categories", getCategories)
   .get("/api/get-products-by-category/:category", getProductsByCategory)
+  .get("/api/get-restaurants", getRestaurants)
   .get("/api/get-restaurant-by-id/:id", getRestaurantById)
   .get("/api/get-products-by-store/:id", getProductsByStore)
 

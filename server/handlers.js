@@ -53,6 +53,29 @@ const getProductsByCategory = async (req, res) => {
   }
 };
 
+const getRestaurants = async (req, res) => {
+  const client = new MongoClient(MONGO_URI);
+  try {
+    await client.connect();
+    const db = client.db("CAPSTONE");
+    const result = await db.collection("restaurants").find().toArray();
+    client.close();
+
+    result.length > 0
+      ? res.status(200).json({
+          status: 200,
+          data: result,
+          message: `All restaurants are loaded!`,
+        })
+      : res.status(404).json({
+          status: 404,
+          message: `Couldn't find any restaurant!`,
+        });
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
+
 const getRestaurantById = async (req, res) => {
   const selectedRestaurant = parseInt(req.params.id);
   const client = new MongoClient(MONGO_URI);
@@ -111,4 +134,5 @@ module.exports = {
   getProductsByCategory,
   getRestaurantById,
   getProductsByStore,
+  getRestaurants,
 };

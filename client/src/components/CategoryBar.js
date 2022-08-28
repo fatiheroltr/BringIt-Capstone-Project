@@ -24,6 +24,7 @@ const CategoryBar = () => {
             <Link
               to={`category/${category.name.toLowerCase()}`}
               key={category._id}
+              onClick={() => window.scrollTo(0, 0)}
             >
               <Circle>
                 <CategoryImage
@@ -41,15 +42,15 @@ const CategoryBar = () => {
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  gap: 45px;
+  gap: 42px;
 `;
 
 const Circle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 115px;
-  height: 115px;
+  width: 100px;
+  height: 100px;
   background-color: var(--light-color);
   border-radius: 50%;
   position: relative;
