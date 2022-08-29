@@ -1,6 +1,6 @@
 [
     {
-      "_id": 4531,
+      "_id": 45301,
       "name": "Margherita Pizza",
       "price": 11,
       "category": "pizza",
@@ -16,10 +16,10 @@
         {"name": "Olive Oil", "removable": false},
         {"name": "Salt", "removable": false}
       ],
-      "options": [{"name": "Pesto", "removable": true},{"name": "Cherry Tomatoes", "removable": true}]
+      "options": [{"name": "Pesto", "removable": true, "price": "0.99"},{"name": "Cherry Tomatoes", "removable": true, "price": "0.99"}]
     },
     {
-      "_id": 4532,
+      "_id": 45302,
       "name": "Caprese Pizza",
       "price": 12,
       "category": "pizza",
@@ -29,7 +29,7 @@
       "store_id": 453
     },
     {
-      "_id": 4533,
+      "_id": 45303,
       "name": "Classic Pizza",
       "price": 11,
       "category": "pizza",
@@ -39,7 +39,7 @@
       "store_id": 453
     },
     {
-      "_id": 4534,
+      "_id": 45304,
       "name": "Quattro Formaggi Pizza",
       "price": 13,
       "category": "pizza",
@@ -49,7 +49,7 @@
       "store_id": 453
     },
     {
-      "_id": 4535,
+      "_id": 45305,
       "name": "Funghi Pizza",
       "price": 11,
       "category": "pizza",
@@ -59,7 +59,7 @@
       "store_id": 453
     },
     {
-      "_id": 4536,
+      "_id": 45306,
       "name": "Tiramisu",
       "price": 6.95,
       "category": "dessert",
@@ -69,7 +69,7 @@
       "store_id": 453
     },
     {
-      "_id": 4537,
+      "_id": 45307,
       "name": "Cannoli",
       "price": 6.95,
       "category": "dessert",
@@ -77,5 +77,206 @@
       "store": "Pizzeria Napoli",
       "stock": 9,
       "store_id": 453
+    },
+    {
+      "_id": 45401,
+      "name": "Sarma",
+      "price": 6.95,
+      "category": "snacks",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45402,
+      "name": "Green beans",
+      "price": 6.95,
+      "category": "snacks",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45403,
+      "name": "Cheese rolls",
+      "price": 9.99,
+      "category": "snacks",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45404,
+      "name": "Lahmacun",
+      "price": 15,
+      "category": "sandwich",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    }
+    ,
+    {
+      "_id": 45405,
+      "name": "Gozleme",
+      "price": 12,
+      "category": "sandwich",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45406,
+      "name": "Doner Sandwich",
+      "price": 12,
+      "category": "sandwich",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45407,
+      "name": "Iskender Kebab",
+      "price": 19,
+      "category": "kebab",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45408,
+      "name": "Adana Kebab",
+      "price": 15,
+      "category": "kebab",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45409,
+      "name": "Beyti Kebab",
+      "price": 19,
+      "category": "kebab",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45410,
+      "name": "Inegol Kofte Kebab",
+      "price": 12,
+      "category": "kebab",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45411,
+      "name": "Chicken Shish Kebab",
+      "price": 15,
+      "category": "kebab",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45412,
+      "name": "Noah's Pudding",
+      "price": 4.99,
+      "category": "dessert",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45413,
+      "name": "Kunefe",
+      "price": 5.99,
+      "category": "dessert",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45414,
+      "name": "Pistachio rolls",
+      "price": 5.99,
+      "category": "dessert",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45415,
+      "name": "Sutlac",
+      "price": 4.99,
+      "category": "dessert",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45416,
+      "name": "Ayran - Yogurt Drink",
+      "price": 12,
+      "category": "cold drinks",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 3.99,
+      "store_id": 454
+    },
+    {
+      "_id": 45417,
+      "name": "Coca Cola",
+      "price": 2.99,
+      "category": "cold drinks",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45418,
+      "name": "Tea",
+      "price": 2.99,
+      "category": "coffee & tea",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
+    },
+    {
+      "_id": 45308,
+      "name": "Lemonade",
+      "price": 6.95,
+      "category": "cold drinks",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Pizzeria Napoli",
+      "stock": 9,
+      "store_id": 453
+    },
+    {
+      "_id": 45419,
+      "name": "Kofte Sandwich",
+      "price": 15.99,
+      "category": "sandwich",
+      "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
+      "store": "Sofra Istanbul",
+      "stock": 9,
+      "store_id": 454
     }
   ]

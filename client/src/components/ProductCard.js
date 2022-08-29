@@ -24,7 +24,12 @@ const ProductCard = ({ productData, restaurantData }) => {
 
   const [showDialog, setShowDialog] = useState(false);
   const open = () => setShowDialog(true);
-  const close = () => setShowDialog(false);
+  const close = () => {
+    setShowDialog(false);
+    setProductIngredients(ingredients);
+    setProductOptions(options);
+    setFinalPrice(price);
+  };
 
   const [productIngredients, setProductIngredients] = useState(ingredients);
   const [productOptions, setProductOptions] = useState(options);
@@ -83,7 +88,7 @@ const ProductCard = ({ productData, restaurantData }) => {
             boxShadow: "0px 10px 50px hsla(0, 0%, 0%, 0.33)",
             width: "610px",
             borderRadius: "20px",
-            padding: "20px",
+            padding: "17px",
             position: "relative",
           }}
           aria-label={productData.name}
@@ -206,7 +211,7 @@ const Container = styled.div`
 `;
 
 const DialogPriceContainer = styled.div`
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   align-items: center;
   gap: 30px;
@@ -216,7 +221,7 @@ const DialogPriceContainer = styled.div`
   bottom: 0;
   width: 100%;
   left: 0;
-  border-radius: 0px 0px 20px 20px;
+  border-radius: 0px 0px 15px 15px;
   height: 66px;
   padding-right: 20px;
 `;
@@ -237,7 +242,6 @@ const Title = styled.span`
 const IngredientsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 70px;
 `;
 
 const IngredientsContainer = styled.div`

@@ -1,3 +1,4 @@
 [
-    { "_id": 453, "name": "Pizzeria Napoli", "products": [4531, 4532, 4533, 4534], "businessHours": "9am-5pm" }
+    { "_id": 453, "name": "Pizzeria Napoli", "operation_start":7, "operation_end":17 },
+    { "_id": 454, "name": "Sofra Istanbul", "operation_start":7, "operation_end":17 }
 ]
