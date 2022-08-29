@@ -5,9 +5,11 @@ export default createGlobalStyle`
       --primary-color: #28485E;
       --accent-color: #F05A28;
       --light-color: #f7f7ff;
-      --teal-color: #008EA7
-      
+      --teal-color: #008EA7;
 
+      --ingredient-removable: rgba(40, 72, 94, .1);
+      --ingredient: rgba(0, 142, 167, .1);
+      --ingredient-option: rgba(240, 90, 40, .1);
     }
 
     html, body, div, span, applet, object, iframe,

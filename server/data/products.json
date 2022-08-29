@@ -7,7 +7,16 @@
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
       "store": "Pizzeria Napoli",
       "stock": 9,
-      "store_id": 453
+      "store_id": 453,
+      "ingredients": [
+        {"name": "Dough", "removable": false},
+        {"name": "Mozzarella", "removable": true},
+        {"name": "Sauce", "removable": true},
+        {"name": "Basil", "removable": true},
+        {"name": "Olive Oil", "removable": false},
+        {"name": "Salt", "removable": false}
+      ],
+      "options": [{"name": "Pesto", "removable": true},{"name": "Cherry Tomatoes", "removable": true}]
     },
     {
       "_id": 4532,
@@ -53,7 +62,7 @@
       "_id": 4536,
       "name": "Tiramisu",
       "price": 6.95,
-      "category": "pastry",
+      "category": "dessert",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
       "store": "Pizzeria Napoli",
       "stock": 9,
@@ -63,7 +72,7 @@
       "_id": 4537,
       "name": "Cannoli",
       "price": 6.95,
-      "category": "pastry",
+      "category": "dessert",
       "desc": "Lorem ipsum dolor sit amet, consec-tetur adipiscing elit.",
       "store": "Pizzeria Napoli",
       "stock": 9,

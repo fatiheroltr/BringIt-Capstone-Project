@@ -5,7 +5,6 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
-import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 
 const CategoryResults = () => {
