@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import LogoSrc from "../../assets/bringit-logo.png";
 import styled from "styled-components";
+import { extractImageUrl } from "../../utils";
 
 const Logo = () => {
   return (
     <Wrapper>
       <Link to="/">
-        <LogoImage src={LogoSrc}></LogoImage>
+        <LogoImage src={extractImageUrl("bringit-logo", "png")}></LogoImage>
       </Link>
       <Slogan>delivery in campus</Slogan>
     </Wrapper>

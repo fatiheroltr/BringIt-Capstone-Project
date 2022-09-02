@@ -1,8 +1,5 @@
 import styled from "styled-components";
-import Icon1 from "../assets/how-1.png";
-import Icon2 from "../assets/how-2.png";
-import Icon3 from "../assets/how-3.png";
-import Icon4 from "../assets/how-4.png";
+import { extractImageUrl } from "../utils";
 
 const HowItWorks = () => {
   return (
@@ -14,7 +11,7 @@ const HowItWorks = () => {
       </Desc>
       <IconsWrapper>
         <IconContainer>
-          <Icon src={Icon1} />
+          <Icon src={extractImageUrl("how-1", "png")} />
           <IconTitle>You place the order</IconTitle>
           <IconDesc>
             Like in any other food delivery app, it starts with your pick and
@@ -22,7 +19,7 @@ const HowItWorks = () => {
           </IconDesc>
         </IconContainer>
         <IconContainer>
-          <Icon src={Icon2} />
+          <Icon src={extractImageUrl("how-2", "png")} />
           <IconTitle>Store prepares it</IconTitle>
           <IconDesc>
             The store gets the order details, and prepares the items in the time
@@ -30,7 +27,7 @@ const HowItWorks = () => {
           </IconDesc>
         </IconContainer>
         <IconContainer>
-          <Icon src={Icon3} />
+          <Icon src={extractImageUrl("how-3", "png")} />
           <IconTitle>Someone picks it up</IconTitle>
           <IconDesc>
             Someone available who accepted the job picks it up and brings it to
@@ -38,7 +35,7 @@ const HowItWorks = () => {
           </IconDesc>
         </IconContainer>
         <IconContainer>
-          <Icon src={Icon4} />
+          <Icon src={extractImageUrl("how-4", "png")} />
           <IconTitle>You enjoy it</IconTitle>
           <IconDesc>
             You get your order at where ever you are in the campus, fun or work

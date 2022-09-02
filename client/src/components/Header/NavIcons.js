@@ -1,14 +1,15 @@
 import { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
-
 import styled from "styled-components";
-import CartIconSrc from "../../assets/icons/cart-icon.svg";
-import MessageIconSrc from "../../assets/icons/message-icon.svg";
-import ProfileIconSrc from "../../assets/icons/profile-icon.svg";
+import LogoutButton from "../LogoutButton";
+import { useAuth0 } from "@auth0/auth0-react";
+import { extractImageUrl } from "../../utils";
 
 const NavIcons = () => {
   const { cart, isCartLoaded, isCartOpen, setIsCartOpen } =
     useContext(CartContext);
+
+  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   let cartQuantity = 0;
   isCartLoaded &&
@@ -27,14 +28,21 @@ const NavIcons = () => {
           }
         }}
       >
-        <CartIcon src={CartIconSrc} />
+        <CartIcon src={extractImageUrl("cart-icon", "svg")} />
       </CartIconContainer>
 
       <MessageIconContainer>
-        <MessageIcon src={MessageIconSrc} />
+        <MessageIcon src={extractImageUrl("message-icon", "svg")} />
       </MessageIconContainer>
-      <ProfileIconContainer>
-        <ProfileIcon src={ProfileIconSrc} />
+      <LogoutButton />
+      <ProfileIconContainer onClick={() => loginWithRedirect()}>
+        <ProfileIcon
+          src={
+            isAuthenticated
+              ? user.picture
+              : extractImageUrl("profile-icon", "svg")
+          }
+        />
       </ProfileIconContainer>
     </Wrapper>
   );
@@ -107,11 +115,18 @@ const MessageIcon = styled.img`
   height: 24px;
 `;
 
-const ProfileIconContainer = styled.div``;
+const ProfileIconContainer = styled.button`
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+`;
 
 const ProfileIcon = styled.img`
   width: 28px;
   height: 28px;
+  border-radius: 50%;
 `;
 
 export default NavIcons;

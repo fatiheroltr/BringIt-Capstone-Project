@@ -1,9 +1,6 @@
 import styled from "styled-components";
 import Logo from "./Header/Logo";
-import FacebookIconSrc from "../assets/icons/face.png";
-import TwitterIconSrc from "../assets/icons/twitter.png";
-import LinkedinIconSrc from "../assets/icons/linkedin.png";
-import InstgramIconSrc from "../assets/icons/insta.png";
+import { extractImageUrl } from "../utils";
 
 const Footer = () => {
   return (
@@ -11,10 +8,10 @@ const Footer = () => {
       <IdentityContainer>
         <Logo />
         <Socials>
-          <SocialIcon src={FacebookIconSrc} />
-          <SocialIcon src={TwitterIconSrc} />
-          <SocialIcon src={LinkedinIconSrc} />
-          <SocialIcon src={InstgramIconSrc} />
+          <SocialIcon src={extractImageUrl("face", "png")} />
+          <SocialIcon src={extractImageUrl("twitter", "png")} />
+          <SocialIcon src={extractImageUrl("linkedin", "png")} />
+          <SocialIcon src={extractImageUrl("insta", "png")} />
         </Socials>
         <Copyright>© 2022 Fatih Erol. All rights reserved.</Copyright>
       </IdentityContainer>

@@ -1,12 +1,10 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import CartIconSrc from "../assets/icons/little-cart-icon.svg";
-import StoreIconSrc from "../assets/icons/store-icon.svg";
 import { TbListSearch } from "react-icons/tb";
 import styled from "styled-components";
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import "@reach/dialog/styles.css";
-import { extractImageUrl, isStoreOpen } from "../utils";
+import { extractImageUrl } from "../utils";
 import { CartContext } from "../context/CartContext";
 import LoadingCircle from "./LoadingCircle";
 
@@ -158,7 +156,7 @@ const ProductCard = ({ productData, restaurantData }) => {
           <DialogNameContainer>
             <Name>{name}</Name>
             <Store>
-              <StoreIcon src={StoreIconSrc} />
+              <StoreIcon src={extractImageUrl("store-icon", "svg")} />
               {store}
             </Store>
           </DialogNameContainer>
@@ -230,7 +228,7 @@ const ProductCard = ({ productData, restaurantData }) => {
                 <LoadingCircle circleSize={25} />
               ) : (
                 <>
-                  <CartIcon src={CartIconSrc} />
+                  <CartIcon src={extractImageUrl("little-cart-icon", "svg")} />
                   <span>ADD</span>
                 </>
               )}
@@ -252,7 +250,7 @@ const ProductCard = ({ productData, restaurantData }) => {
         onClick={() => window.scrollTo(0, 0)}
       >
         <Store>
-          <StoreIcon src={StoreIconSrc} />
+          <StoreIcon src={extractImageUrl("store-icon", "svg")} />
           {store}
         </Store>
       </StyledLink>
@@ -277,7 +275,7 @@ const ProductCard = ({ productData, restaurantData }) => {
             <LoadingCircle circleSize={25} />
           ) : (
             <>
-              <CartIcon src={CartIconSrc} />
+              <CartIcon src={extractImageUrl("little-cart-icon", "svg")} />
               <span>ADD</span>
             </>
           )}

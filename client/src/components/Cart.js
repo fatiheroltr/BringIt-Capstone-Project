@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import LoadingCircle from "./LoadingCircle";
 import { extractImageUrl } from "../utils";
-import StoreIconSrc from "../assets/icons/store-icon.svg";
 import styled from "styled-components";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { MdPayment } from "react-icons/md";
@@ -10,8 +9,6 @@ import { IoIosPlay } from "react-icons/io";
 import { v4 as uuidv4 } from "uuid";
 
 const Cart = () => {
-  const [subTotal, setSubTotal] = useState(0);
-
   const {
     cart,
     isCartLoaded,
@@ -21,6 +18,7 @@ const Cart = () => {
     setTimeToUpdateCart,
   } = useContext(CartContext);
 
+  const [subTotal, setSubTotal] = useState(0);
   const [updatingCart, setUpdatingCart] = useState(false);
   const [updatedProduct, setUpdatedProduct] = useState();
 
@@ -88,6 +86,10 @@ const Cart = () => {
     }
     setSubTotal(newSubTotal);
   }, [cart]);
+
+  useEffect(() => {
+    setIsCartOpen(false);
+  }, []);
 
   return (
     <Wrapper>
@@ -203,7 +205,9 @@ const Cart = () => {
                           </ExtrasWrapper>
                         )}
                         <Store>
-                          <StoreIcon src={StoreIconSrc} />
+                          <StoreIcon
+                            src={extractImageUrl("store-icon", "svg")}
+                          />
                           {product.store}
                         </Store>
                       </ProductContainer>

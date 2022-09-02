@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import HeroImageSrc from "../assets/figure.png";
+import { extractImageUrl } from "../utils";
 
 const Hero = () => {
   return (
     <Wrapper>
-      <HeroImage src={HeroImageSrc} />
+      <HeroImage src={extractImageUrl("figure", "png")} />
       <HeroText>
         <FirstLine>
           Don’t you have time to<span>grab some lunch?</span>
