@@ -1,14 +1,35 @@
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContext";
+
 import styled from "styled-components";
 import CartIconSrc from "../../assets/icons/cart-icon.svg";
 import MessageIconSrc from "../../assets/icons/message-icon.svg";
 import ProfileIconSrc from "../../assets/icons/profile-icon.svg";
 
 const NavIcons = () => {
+  const { cart, isCartLoaded, isCartOpen, setIsCartOpen } =
+    useContext(CartContext);
+
+  let cartQuantity = 0;
+  isCartLoaded &&
+    cart.map((item) => {
+      cartQuantity += item.selectedQuantity;
+    });
+
   return (
     <Wrapper>
-      <CartIconContainer>
+      <CartIconContainer
+        cartValue={cartQuantity}
+        onClick={() => setIsCartOpen(!isCartOpen)}
+        onKeyDown={(ev) => {
+          if (ev.key === "Escape") {
+            setIsCartOpen(!isCartOpen);
+          }
+        }}
+      >
         <CartIcon src={CartIconSrc} />
       </CartIconContainer>
+
       <MessageIconContainer>
         <MessageIcon src={MessageIconSrc} />
       </MessageIconContainer>
@@ -25,16 +46,18 @@ const Wrapper = styled.div`
   gap: 15px;
 `;
 
-const CartIconContainer = styled.div`
+const CartIconContainer = styled.button`
   position: relative;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 
   &::after {
-    content: "3";
-    /* content: attr(value); */
+    content: "${(props) => props.cartValue}";
     height: 16px;
     background-color: var(--accent-color);
     position: absolute;
-    right: -4px;
+    right: -3px;
     top: -4px;
     text-align: center;
     border-radius: 4px;
@@ -42,6 +65,11 @@ const CartIconContainer = styled.div`
     font-weight: 700;
     font-size: 14px;
     padding: 2px 4px 0 4px;
+    visibility: ${(props) => (props.cartValue > 0 ? "visible" : "hidden")};
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 
@@ -60,7 +88,7 @@ const MessageIconContainer = styled.div`
     background-color: var(--accent-color);
     position: absolute;
     right: -5px;
-    top: -6px;
+    top: -7px;
     text-align: center;
     border-radius: 4px;
     color: #fff;

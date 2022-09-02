@@ -11,6 +11,10 @@ const {
   getRestaurantById,
   getProductsByStore,
   getRestaurants,
+  getCart,
+  addToCart,
+  updateQuantityInCart,
+  deleteItemFromCart,
 } = require("./handlers");
 
 express()
@@ -37,5 +41,10 @@ express()
   .get("/api/get-restaurants", getRestaurants)
   .get("/api/get-restaurant-by-id/:id", getRestaurantById)
   .get("/api/get-products-by-store/:id", getProductsByStore)
+  .get("/api/get-cart", getCart)
+
+  .patch("/api/add-to-cart", addToCart)
+  .patch("/api/update-quantity-in-cart", updateQuantityInCart)
+  .patch("/api/delete-item-from-cart", deleteItemFromCart)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));

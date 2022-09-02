@@ -5,6 +5,7 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
+import Cart from "../components/Cart";
 import styled from "styled-components";
 
 const CategoryResults = () => {
@@ -49,6 +50,7 @@ const CategoryResults = () => {
         </Content>
       )}
       <Footer />
+      <Cart />
     </Wrapper>
   );
 };
@@ -68,6 +70,7 @@ const Content = styled.div`
 `;
 
 const CategoryName = styled.span`
+  margin-top: 117px;
   width: 1297px;
   color: var(--primary-color);
   font-size: 30px;

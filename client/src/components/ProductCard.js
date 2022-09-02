@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import CartIconSrc from "../assets/icons/little-cart-icon.svg";
 import StoreIconSrc from "../assets/icons/store-icon.svg";
+import { TbListSearch } from "react-icons/tb";
 import styled from "styled-components";
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import "@reach/dialog/styles.css";
 import { extractImageUrl, isStoreOpen } from "../utils";
+import { CartContext } from "../context/CartContext";
+import LoadingCircle from "./LoadingCircle";
 
 const ProductCard = ({ productData, restaurantData }) => {
   const {
@@ -20,66 +23,123 @@ const ProductCard = ({ productData, restaurantData }) => {
     options,
   } = productData;
 
-  const [count, setCount] = useState(1);
+  const { timeToUpdateCart, setTimeToUpdateCart } = useContext(CartContext);
 
-  const [showDialog, setShowDialog] = useState(false);
   const open = () => setShowDialog(true);
   const close = () => {
     setShowDialog(false);
     setProductIngredients(ingredients);
     setProductOptions(options);
     setFinalPrice(price);
+    setExcludedIngredients([]);
+    setSelectedOptions([]);
+    setSelectedQuantity(1);
   };
 
+  const [showDialog, setShowDialog] = useState(false);
   const [productIngredients, setProductIngredients] = useState(ingredients);
   const [productOptions, setProductOptions] = useState(options);
+  const [excludedIngredients, setExcludedIngredients] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [finalPrice, setFinalPrice] = useState(price);
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [addingToCart, setAddingToCart] = useState(false);
 
   const handleDecrease = () => {
-    count > 1 && setCount(count - 1);
+    selectedQuantity > 1 && setSelectedQuantity(selectedQuantity - 1);
   };
 
   const handleIncrease = () => {
-    count < stock && setCount(count + 1);
+    selectedQuantity < stock && setSelectedQuantity(selectedQuantity + 1);
   };
 
   const handleRemove = (removedIngredient) => {
-    const newIngredients = productIngredients.filter(
-      (ingredient) => ingredient.name !== removedIngredient.name
+    setSelectedOptions(
+      selectedOptions.filter((item) => item.name !== removedIngredient.name)
     );
-    setProductIngredients(newIngredients);
 
+    !options.includes(removedIngredient) &&
+      setExcludedIngredients([...excludedIngredients, removedIngredient]);
+
+    setProductIngredients(
+      productIngredients.filter(
+        (ingredient) => ingredient.name !== removedIngredient.name
+      )
+    );
+
+    // If removed ingredient is an option, subtract its price from total
     options.find((option) => {
       if (option.name === removedIngredient.name) {
-        setFinalPrice(finalPrice - parseFloat(removedIngredient.price));
-        const newOptions = [...productOptions];
-        newOptions.push(removedIngredient);
-        setProductOptions(newOptions);
+        return (
+          setFinalPrice(finalPrice - parseFloat(removedIngredient.price)),
+          setProductOptions([...productOptions, removedIngredient])
+        );
       }
+      return null;
     });
   };
 
   const handleAdd = (addedIngredient) => {
-    const addToIngredients = [...productIngredients];
-    addToIngredients.push(addedIngredient);
-    setProductIngredients(addToIngredients);
+    setProductIngredients([...productIngredients, addedIngredient]);
 
-    const newOptions = productOptions.filter(
-      (option) => option !== addedIngredient
+    !ingredients.includes(addedIngredient) &&
+      setSelectedOptions([...selectedOptions, addedIngredient]);
+
+    setExcludedIngredients(
+      excludedIngredients.filter((item) => item.name !== addedIngredient.name)
     );
-    setProductOptions(newOptions);
 
+    setProductOptions(
+      productOptions.filter((option) => option !== addedIngredient)
+    );
+
+    // If added ingredient is an option, add its price to total
     options.find((option) => {
       if (option.name === addedIngredient.name) {
-        setFinalPrice(finalPrice + parseFloat(addedIngredient.price));
+        return setFinalPrice(finalPrice + parseFloat(addedIngredient.price));
       }
+      return null;
     });
+  };
+
+  const handleAddToCart = () => {
+    let optionsTotal = 0;
+    selectedOptions.map((option) => {
+      return (optionsTotal += parseFloat(option.price));
+    });
+    setAddingToCart(true);
+    const cartObject = {
+      ...productData,
+      price: price + optionsTotal,
+      excludedIngredients,
+      selectedOptions,
+      selectedQuantity,
+    };
+
+    const patchCart = async () => {
+      const requestOptions = {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cartObject),
+      };
+      const response = await fetch(`/api/add-to-cart`, requestOptions);
+      const result = await response.json();
+      if (result) {
+        await setTimeToUpdateCart(!timeToUpdateCart);
+        setAddingToCart(false);
+        close();
+      }
+    };
+    patchCart();
   };
 
   return (
     <Wrapper>
       <DialogOverlay
-        style={{ background: "hsla(0, 0%, 0%, 0.5)", zIndex: "9" }}
+        style={{
+          background: "hsla(0, 0%, 0%, 0.6)",
+          zIndex: "99",
+        }}
         isOpen={showDialog}
         onDismiss={close}
       >
@@ -90,6 +150,7 @@ const ProductCard = ({ productData, restaurantData }) => {
             borderRadius: "20px",
             padding: "17px",
             position: "relative",
+            marginTop: "3%",
           }}
           aria-label={productData.name}
         >
@@ -135,25 +196,44 @@ const ProductCard = ({ productData, restaurantData }) => {
                   );
                 })}
               </IngredientsContainer>
+              {excludedIngredients.length > 0 && <Title>Excluded:</Title>}
+              <IngredientsContainer>
+                {excludedIngredients.map((ingredient, i) => {
+                  return (
+                    <Ingredient key={i} removable={true}>
+                      {ingredient.name}
+                      <button onClick={() => handleAdd(ingredient)}>+</button>
+                    </Ingredient>
+                  );
+                })}
+              </IngredientsContainer>
             </IngredientsWrapper>
           )}
           <DialogPriceContainer>
             <Price>${finalPrice.toFixed(2)}</Price>
             <QuantityTool>
               <Indicator onClick={handleDecrease}>-</Indicator>
-              <Count>{count}</Count>
+              <Count>{selectedQuantity}</Count>
               <Indicator onClick={handleIncrease}>+</Indicator>
             </QuantityTool>
             <Button
               disabled={
-                !isStoreOpen(
-                  restaurantData.operation_start,
-                  restaurantData.operation_end
-                ) && true
+                // !isStoreOpen(
+                //   restaurantData.operation_start,
+                //   restaurantData.operation_end
+                // ) ||
+                addingToCart && true
               }
+              onClick={handleAddToCart}
             >
-              <CartIcon src={CartIconSrc} />
-              <span>ADD</span>
+              {addingToCart ? (
+                <LoadingCircle circleSize={25} />
+              ) : (
+                <>
+                  <CartIcon src={CartIconSrc} />
+                  <span>ADD</span>
+                </>
+              )}
             </Button>
           </DialogPriceContainer>
           <DialogCloseButton className="close-button" onClick={close}>
@@ -162,7 +242,9 @@ const ProductCard = ({ productData, restaurantData }) => {
         </DialogContent>
       </DialogOverlay>
 
-      <Image imageSrc={extractImageUrl(_id, "png")} onClick={open} />
+      <Image imageSrc={extractImageUrl(_id, "png")} onClick={open}>
+        <DetailsIcon />
+      </Image>
       <Name>{name}</Name>
       <Desc>{desc}</Desc>
       <StyledLink
@@ -178,19 +260,27 @@ const ProductCard = ({ productData, restaurantData }) => {
         <Price>${finalPrice.toFixed(2)}</Price>
         <QuantityTool>
           <Indicator onClick={handleDecrease}>-</Indicator>
-          <Count>{count}</Count>
+          <Count>{selectedQuantity}</Count>
           <Indicator onClick={handleIncrease}>+</Indicator>
         </QuantityTool>
         <Button
           disabled={
-            !isStoreOpen(
-              restaurantData.operation_start,
-              restaurantData.operation_end
-            ) && true
+            // !isStoreOpen(
+            //   restaurantData.operation_start,
+            //   restaurantData.operation_end
+            // ) ||
+            addingToCart && true
           }
+          onClick={handleAddToCart}
         >
-          <CartIcon src={CartIconSrc} />
-          <span>ADD</span>
+          {addingToCart ? (
+            <LoadingCircle circleSize={25} />
+          ) : (
+            <>
+              <CartIcon src={CartIconSrc} />
+              <span>ADD</span>
+            </>
+          )}
         </Button>
       </Container>
     </Wrapper>
@@ -208,6 +298,18 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 25px;
+`;
+
+const DetailsIcon = styled(TbListSearch)`
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  color: #fff;
+  opacity: 0;
+  z-index: 9;
+  top: 65px;
+  left: 110px;
+  transition: 0.2s ease-in-out;
 `;
 
 const DialogPriceContainer = styled.div`
@@ -320,10 +422,14 @@ const Image = styled.button`
     opacity: 0;
     cursor: pointer;
     transition: 0.2s ease-in-out;
+    /* z-index: 4; */
   }
 
   &:hover {
     &::after {
+      opacity: 1;
+    }
+    & ${DetailsIcon} {
       opacity: 1;
     }
   }

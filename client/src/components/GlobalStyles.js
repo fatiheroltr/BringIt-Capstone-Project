@@ -7,6 +7,8 @@ export default createGlobalStyle`
       --light-color: #f7f7ff;
       --teal-color: #008EA7;
 
+      --border-color: rgba(40, 72, 94, 0.15);
+
       --ingredient-removable: rgba(40, 72, 94, .1);
       --ingredient: rgba(0, 142, 167, .1);
       --ingredient-option: rgba(240, 90, 40, .1);

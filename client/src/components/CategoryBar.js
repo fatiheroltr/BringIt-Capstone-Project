@@ -16,10 +16,13 @@ const CategoryBar = () => {
     fetchCategories();
   }, []);
 
+  const sortedCategories =
+    categories && categories.sort((a, b) => a._id - b._id);
+
   return (
     <Wrapper>
       {categories &&
-        categories.map((category) => {
+        sortedCategories.map((category) => {
           return (
             <Link
               to={`category/${category.name.toLowerCase()}`}
