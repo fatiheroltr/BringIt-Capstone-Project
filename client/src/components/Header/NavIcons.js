@@ -51,20 +51,21 @@ const CartIconContainer = styled.button`
   border: none;
   background: transparent;
   cursor: pointer;
+  padding: 0;
 
   &::after {
     content: "${(props) => props.cartValue}";
     height: 16px;
     background-color: var(--accent-color);
     position: absolute;
-    right: -3px;
-    top: -4px;
+    right: -4px;
+    top: -5px;
     text-align: center;
     border-radius: 4px;
     color: #fff;
     font-weight: 700;
     font-size: 14px;
-    padding: 2px 4px 0 4px;
+    padding: 1px 5px;
     visibility: ${(props) => (props.cartValue > 0 ? "visible" : "hidden")};
   }
 
@@ -78,23 +79,26 @@ const CartIcon = styled.img`
   height: 27px;
 `;
 
-const MessageIconContainer = styled.div`
+const MessageIconContainer = styled.button`
   position: relative;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
 
   &::after {
-    content: "1";
-    /* content: attr(value); */
+    content: "3";
     height: 16px;
     background-color: var(--accent-color);
     position: absolute;
     right: -5px;
-    top: -7px;
+    top: -6px;
     text-align: center;
     border-radius: 4px;
     color: #fff;
     font-weight: 700;
     font-size: 14px;
-    padding: 2px 4px 0 4px;
+    padding: 1px 5px;
   }
 `;
 

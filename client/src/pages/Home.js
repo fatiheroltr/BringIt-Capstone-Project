@@ -5,14 +5,17 @@ import HowItWorks from "../components/HowItWorks";
 import Footer from "../components/Footer";
 
 import styled from "styled-components";
+import Content from "../components/Content";
 
 const Home = () => {
   return (
     <Wrapper>
       <Header />
-      <Hero />
-      <CategoryBar />
-      <HowItWorks />
+      <Content marginTop={true}>
+        <Hero />
+        <CategoryBar />
+        <HowItWorks />
+      </Content>
       <Footer />
     </Wrapper>
   );

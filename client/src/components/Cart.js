@@ -22,6 +22,7 @@ const Cart = () => {
   } = useContext(CartContext);
 
   const [updatingCart, setUpdatingCart] = useState(false);
+  const [updatedProduct, setUpdatedProduct] = useState();
 
   const patchCart = async (updateObject) => {
     const requestOptions = {
@@ -127,29 +128,40 @@ const Cart = () => {
                               {!updatingCart ? (
                                 <>
                                   <Indicator
-                                    onClick={() =>
-                                      product.selectedQuantity > 0 &&
-                                      handleDecrease(
-                                        product._id,
-                                        product.selectedQuantity
-                                      )
-                                    }
+                                    onClick={() => {
+                                      if (product.selectedQuantity > 0) {
+                                        handleDecrease(
+                                          product._id,
+                                          product.selectedQuantity
+                                        );
+                                      }
+                                      setUpdatedProduct(product._id);
+                                    }}
                                   >
                                     -
                                   </Indicator>
                                   <Count>{product.selectedQuantity}</Count>
                                   <Indicator
-                                    onClick={() =>
-                                      product.selectedQuantity <
-                                        product.stock &&
-                                      handleIncrease(product._id)
-                                    }
+                                    onClick={() => {
+                                      if (
+                                        product.selectedQuantity < product.stock
+                                      ) {
+                                        handleIncrease(product._id);
+                                      }
+                                      setUpdatedProduct(product._id);
+                                    }}
                                   >
                                     +
                                   </Indicator>
                                 </>
-                              ) : (
+                              ) : updatedProduct === product._id ? (
                                 <LoadingCircle circleSize={20} />
+                              ) : (
+                                <>
+                                  <Indicator>-</Indicator>
+                                  <Count>{product.selectedQuantity}</Count>
+                                  <Indicator>+</Indicator>
+                                </>
                               )}
                             </QuantityTool>
                           </ProductSection>

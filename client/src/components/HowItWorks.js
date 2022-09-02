@@ -54,7 +54,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 200px 0;
+  margin: 200px 0 150px 0;
 `;
 
 const IconsWrapper = styled.div`

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
-import LoadingCircle from "../components/LoadingCircle";
+import Content from "../components/Content";
 import { RestaurantsContext } from "../context/RestaurantsContext";
 import { extractImageUrl, isStoreOpen } from "../utils";
 import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
@@ -52,42 +52,45 @@ const Restaurant = () => {
               </StoreHours>
             </StoreInfo>
           </BannerContainer>
-          <Content>
-            {uniqueCategories.map((category) => {
-              return (
-                <div key={category}>
-                  <CategoryName>
-                    {category.substring(0, 1).toUpperCase() +
-                      category.substring(1)}
-                  </CategoryName>
-                  <ProductsContainer>
-                    {products.map((product) => {
-                      return (
-                        product.category === category && (
-                          <ProductCard
-                            productData={product}
-                            restaurantData={restaurant}
-                            key={product._id}
-                          />
-                        )
-                      );
-                    })}
-                  </ProductsContainer>
-                </div>
-              );
-            })}
+          <Content marginTop={false}>
+            <ProductsWrapper>
+              {uniqueCategories.map((category) => {
+                return (
+                  <div key={category}>
+                    <CategoryName>
+                      {category.substring(0, 1).toUpperCase() +
+                        category.substring(1)}
+                    </CategoryName>
+                    <ProductsContainer>
+                      {products.map((product) => {
+                        return (
+                          product.category === category && (
+                            <ProductCard
+                              productData={product}
+                              restaurantData={restaurant}
+                              key={product._id}
+                            />
+                          )
+                        );
+                      })}
+                    </ProductsContainer>
+                  </div>
+                );
+              })}
+            </ProductsWrapper>
           </Content>
         </>
       ) : (
-        <>
+        <div style={{ marginTop: "117px" }}>
           <RestaurantBannerSkeleton />
           <ProductsContainer>
             {[...Array(8)].map((e, i) => (
               <ProductCardSkeleton key={i} />
             ))}
           </ProductsContainer>
-        </>
+        </div>
       )}
+
       <Footer />
     </Wrapper>
   );
@@ -99,7 +102,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Content = styled.div`
+const ProductsWrapper = styled.div`
   margin-top: 80px;
   display: flex;
   flex-direction: column;
@@ -124,6 +127,7 @@ const BannerContainer = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
+  margin-top: 117px;
 
   &::after {
     content: "";

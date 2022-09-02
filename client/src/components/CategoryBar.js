@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { extractImageUrl } from "../utils";
 
 import styled from "styled-components";
+import CategoryBarSkeleton from "./Skeletons/CategoryBarSkeleton";
 
 const CategoryBar = () => {
   const [categories, setCategories] = useState();
@@ -21,7 +22,7 @@ const CategoryBar = () => {
 
   return (
     <Wrapper>
-      {categories &&
+      {categories ? (
         sortedCategories.map((category) => {
           return (
             <Link
@@ -37,7 +38,10 @@ const CategoryBar = () => {
               </Circle>
             </Link>
           );
-        })}
+        })
+      ) : (
+        <CategoryBarSkeleton />
+      )}
     </Wrapper>
   );
 };

@@ -7,6 +7,7 @@ import ProductCard from "../components/ProductCard";
 import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
 import Cart from "../components/Cart";
 import styled from "styled-components";
+import Content from "../components/Content";
 
 const CategoryResults = () => {
   const { category } = useParams();
@@ -25,32 +26,33 @@ const CategoryResults = () => {
   return (
     <Wrapper>
       <Header />
-      <CategoryName>
-        {category.substring(0, 1).toUpperCase() + category.substring(1)}
-      </CategoryName>
-      {products && isRestaurantsLoaded ? (
-        <Content>
-          {products.map((product) => {
-            return (
-              <ProductCard
-                productData={product}
-                restaurantData={restaurants.find(
-                  (restaurant) => restaurant._id === product.store_id
-                )}
-                key={product._id}
-              />
-            );
-          })}
-        </Content>
-      ) : (
-        <Content>
-          {[...Array(8)].map((e, i) => (
-            <ProductCardSkeleton key={i} />
-          ))}
-        </Content>
-      )}
+      <Content marginTop={true}>
+        <CategoryName>
+          {category.substring(0, 1).toUpperCase() + category.substring(1)}
+        </CategoryName>
+        {products && isRestaurantsLoaded ? (
+          <ProductsWrapper>
+            {products.map((product) => {
+              return (
+                <ProductCard
+                  productData={product}
+                  restaurantData={restaurants.find(
+                    (restaurant) => restaurant._id === product.store_id
+                  )}
+                  key={product._id}
+                />
+              );
+            })}
+          </ProductsWrapper>
+        ) : (
+          <ProductsWrapper>
+            {[...Array(8)].map((e, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </ProductsWrapper>
+        )}
+      </Content>
       <Footer />
-      <Cart />
     </Wrapper>
   );
 };
@@ -61,7 +63,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Content = styled.div`
+const ProductsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 75px;
@@ -69,8 +71,7 @@ const Content = styled.div`
   grid-row-gap: 60px;
 `;
 
-const CategoryName = styled.span`
-  margin-top: 117px;
+const CategoryName = styled.p`
   width: 1297px;
   color: var(--primary-color);
   font-size: 30px;
