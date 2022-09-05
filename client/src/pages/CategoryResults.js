@@ -5,9 +5,9 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
-import Cart from "../components/Cart";
 import styled from "styled-components";
 import Content from "../components/Content";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
 const CategoryResults = () => {
   const { category } = useParams();
@@ -79,4 +79,8 @@ const CategoryName = styled.p`
   margin-bottom: 30px;
 `;
 
-export default CategoryResults;
+// export default CategoryResults;
+export default withAuthenticationRequired(CategoryResults, {
+  // Show a message while the user waits to be redirected to the login page.
+  onRedirecting: () => <div>Redirecting you to the login page...</div>,
+});

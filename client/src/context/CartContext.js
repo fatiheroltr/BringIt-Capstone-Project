@@ -1,22 +1,26 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { UserContext } from "./UserContext";
 
 export const CartContext = createContext(null);
 
 export const CartProvider = ({ children }) => {
+  const { currentUser } = useContext(UserContext);
   const [cart, setCart] = useState();
   const [isCartLoaded, setIsCartLoaded] = useState(false);
   const [timeToUpdateCart, setTimeToUpdateCart] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(true);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
-    const fetchCart = async () => {
-      const response = await fetch(`/api/get-cart`);
-      const result = await response.json();
-      setCart(result.data);
-      setIsCartLoaded(true);
-    };
-    fetchCart();
-  }, [setTimeToUpdateCart, timeToUpdateCart]);
+    if (currentUser) {
+      const fetchCart = async () => {
+        const response = await fetch(`/api/get-cart/${currentUser.email}`);
+        const result = await response.json();
+        result && setCart(result.data);
+        setIsCartLoaded(true);
+      };
+      fetchCart();
+    }
+  }, [setTimeToUpdateCart, timeToUpdateCart, currentUser]);
 
   return (
     <CartContext.Provider

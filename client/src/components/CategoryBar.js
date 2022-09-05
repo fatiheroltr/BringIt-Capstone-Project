@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { extractImageUrl } from "../utils";
-
 import styled from "styled-components";
 import CategoryBarSkeleton from "./Skeletons/CategoryBarSkeleton";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const CategoryBar = () => {
+  const { isAuthenticated } = useAuth0();
   const [categories, setCategories] = useState();
 
   useEffect(() => {
@@ -24,11 +25,28 @@ const CategoryBar = () => {
     <Wrapper>
       {categories ? (
         sortedCategories.map((category) => {
+          // if (isAuthenticated) {
+          //   return (
+          //     <Link
+          //       to={`category/${category.name.toLowerCase()}`}
+          //       key={category._id}
+          //       onClick={() => window.scrollTo(0, 0)}
+          //     >
+          //       <Circle>
+          //         <CategoryImage
+          //           src={extractImageUrl(category._id, "png", "category-icon")}
+          //         />
+          //         <CategoryName>{category.name}</CategoryName>
+          //       </Circle>
+          //     </Link>
+          //   );
+          // }
           return (
             <Link
               to={`category/${category.name.toLowerCase()}`}
               key={category._id}
               onClick={() => window.scrollTo(0, 0)}
+              redirect_uri={`category/${category.name.toLowerCase()}`}
             >
               <Circle>
                 <CategoryImage

@@ -20,7 +20,7 @@ const spin = keyframes`
 
 const Wrapper = styled.div`
   width: 100%;
-  height: calc(100vh - 377px);
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

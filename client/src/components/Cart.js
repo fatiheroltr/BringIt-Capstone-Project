@@ -7,10 +7,13 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { MdPayment } from "react-icons/md";
 import { IoIosPlay } from "react-icons/io";
 import { v4 as uuidv4 } from "uuid";
+import { useAuth0 } from "@auth0/auth0-react";
+import { UserContext } from "../context/UserContext";
 
 const Cart = () => {
   const {
     cart,
+    setCart,
     isCartLoaded,
     isCartOpen,
     setIsCartOpen,
@@ -18,24 +21,36 @@ const Cart = () => {
     setTimeToUpdateCart,
   } = useContext(CartContext);
 
+  const { user, isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
+  const { currentUser } = useContext(UserContext);
+
   const [subTotal, setSubTotal] = useState(0);
   const [updatingCart, setUpdatingCart] = useState(false);
   const [updatedProduct, setUpdatedProduct] = useState();
+  const [token, setToken] = useState();
+
+  if (localStorage.getItem("token") === null) {
+    const newToken = uuidv4();
+    localStorage.setItem("token", JSON.stringify(newToken));
+    setToken(newToken);
+  }
 
   const patchCart = async (updateObject) => {
-    const requestOptions = {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updateObject),
-    };
-    const response = await fetch(
-      `/api/update-quantity-in-cart`,
-      requestOptions
-    );
-    const result = await response.json();
-    if (result) {
-      await setTimeToUpdateCart(!timeToUpdateCart);
-      setUpdatingCart(false);
+    if (currentUser) {
+      const requestOptions = {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ updateObject, currentUser }),
+      };
+      const response = await fetch(
+        `/api/update-quantity-in-cart`,
+        requestOptions
+      );
+      const result = await response.json();
+      if (result) {
+        await setTimeToUpdateCart(!timeToUpdateCart);
+        setUpdatingCart(false);
+      }
     }
   };
 
@@ -43,7 +58,7 @@ const Cart = () => {
     const requestOptions = {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(id),
+      body: JSON.stringify({ id, currentUser }),
     };
     const response = await fetch(`/api/delete-item-from-cart`, requestOptions);
     const result = await response.json();
@@ -86,10 +101,6 @@ const Cart = () => {
     }
     setSubTotal(newSubTotal);
   }, [cart]);
-
-  useEffect(() => {
-    setIsCartOpen(false);
-  }, []);
 
   return (
     <Wrapper>
@@ -296,7 +307,6 @@ const EmptyCartContainer = styled.div`
 const CheckoutButton = styled.button`
   margin: auto;
   margin-top: 15px;
-  margin-bottom: 60px;
   width: 250px;
   height: 35px;
   border: none;
@@ -345,11 +355,12 @@ const Wrapper = styled.div`
 `;
 
 const CartContent = styled.div`
-  overflow-y: auto;
-  height: 100%;
+  margin-top: 66px;
+  height: auto;
 `;
 
 const Container = styled.div`
+  overflow-y: auto;
   position: fixed;
   top: 117px;
   right: ${(props) => (props.isCartOpen ? "0px" : "-400px")};
@@ -360,7 +371,7 @@ const Container = styled.div`
   transition: 0.3s ease-in-out;
   -webkit-box-shadow: 1px 30px 36px 10px rgba(0, 0, 0, 0.61);
   box-shadow: 3px 40px 36px 4px rgba(0, 0, 0, 0.31);
-  padding: 20px;
+  padding: 0 20px 40px 20px;
 
   &:focus {
     outline: none;
@@ -514,11 +525,15 @@ const Count = styled.span`
 `;
 
 const CartTitleContainer = styled.div`
+  position: fixed;
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 8px;
   padding-bottom: 15px;
   border-bottom: 1px solid var(--border-color);
+  background-color: #fff;
+  padding-top: 20px;
 `;
 
 const CartTitle = styled.span`

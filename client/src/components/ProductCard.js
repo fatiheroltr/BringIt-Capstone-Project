@@ -7,6 +7,7 @@ import "@reach/dialog/styles.css";
 import { extractImageUrl } from "../utils";
 import { CartContext } from "../context/CartContext";
 import LoadingCircle from "./LoadingCircle";
+import { UserContext } from "../context/UserContext";
 
 const ProductCard = ({ productData, restaurantData }) => {
   const {
@@ -22,6 +23,8 @@ const ProductCard = ({ productData, restaurantData }) => {
   } = productData;
 
   const { timeToUpdateCart, setTimeToUpdateCart } = useContext(CartContext);
+
+  const { currentUser } = useContext(UserContext);
 
   const open = () => setShowDialog(true);
   const close = () => {
@@ -106,6 +109,19 @@ const ProductCard = ({ productData, restaurantData }) => {
       return (optionsTotal += parseFloat(option.price));
     });
     setAddingToCart(true);
+
+    // Sorting alphabetically, otherwise excluded ingredients in different order
+    // will be a new item instead of increasing the quantity of current
+    const sortedExcludedIngredients = excludedIngredients.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    setExcludedIngredients(sortedExcludedIngredients);
+
+    const sortedSelectedOptions = selectedOptions.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    setSelectedOptions(sortedSelectedOptions);
+
     const cartObject = {
       ...productData,
       price: price + optionsTotal,
@@ -118,7 +134,7 @@ const ProductCard = ({ productData, restaurantData }) => {
       const requestOptions = {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(cartObject),
+        body: JSON.stringify({ cartObject, currentUser }),
       };
       const response = await fetch(`/api/add-to-cart`, requestOptions);
       const result = await response.json();

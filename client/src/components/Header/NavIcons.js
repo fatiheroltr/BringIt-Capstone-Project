@@ -1,18 +1,34 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CartContext } from "../../context/CartContext";
 import styled from "styled-components";
 import LogoutButton from "../LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { extractImageUrl } from "../../utils";
+import { UserContext } from "../../context/UserContext";
+import LoadingCircle from "../LoadingCircle";
 
 const NavIcons = () => {
   const { cart, isCartLoaded, isCartOpen, setIsCartOpen } =
     useContext(CartContext);
 
-  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
+
+  const {
+    currentUser,
+    setCurrentUser,
+    // isCurrentUserLoaded,
+    // setIsCurrentUserLoaded,
+    setUser,
+    error,
+    setError,
+  } = useContext(UserContext);
+
+  useEffect(() => {
+    isAuthenticated && setUser(user);
+  }, [isAuthenticated]);
 
   let cartQuantity = 0;
-  isCartLoaded &&
+  cart &&
     cart.map((item) => {
       cartQuantity += item.selectedQuantity;
     });
@@ -21,7 +37,9 @@ const NavIcons = () => {
     <Wrapper>
       <CartIconContainer
         cartValue={cartQuantity}
-        onClick={() => setIsCartOpen(!isCartOpen)}
+        onClick={() =>
+          !isAuthenticated ? loginWithRedirect() : setIsCartOpen(!isCartOpen)
+        }
         onKeyDown={(ev) => {
           if (ev.key === "Escape") {
             setIsCartOpen(!isCartOpen);
@@ -32,17 +50,24 @@ const NavIcons = () => {
       </CartIconContainer>
 
       <MessageIconContainer>
-        <MessageIcon src={extractImageUrl("message-icon", "svg")} />
+        <MessageIcon
+          src={extractImageUrl("message-icon", "svg")}
+          onClick={() => !isAuthenticated && loginWithRedirect()}
+        />
       </MessageIconContainer>
       <LogoutButton />
       <ProfileIconContainer onClick={() => loginWithRedirect()}>
-        <ProfileIcon
-          src={
-            isAuthenticated
-              ? user.picture
-              : extractImageUrl("profile-icon", "svg")
-          }
-        />
+        {!isLoading ? (
+          <ProfileIcon
+            src={
+              isAuthenticated
+                ? user.picture
+                : extractImageUrl("profile-icon", "svg")
+            }
+          />
+        ) : (
+          <LoadingCircle circleSize={28} />
+        )}
       </ProfileIconContainer>
     </Wrapper>
   );
