@@ -178,8 +178,6 @@ const addToCart = async (req, res) => {
       ],
     });
 
-    console.log("checkIfExist: ", checkIfExist);
-
     const result =
       checkIfExist > 0
         ? await db.collection("users").updateOne(
@@ -193,17 +191,12 @@ const addToCart = async (req, res) => {
             },
             { $inc: { "cart.$.selectedQuantity": +cartItem.selectedQuantity } }
           )
-        : await db.collection("users").updateOne(
-            {
-              $and: [
-                { email: currentUser.email },
-                // { "cart.id": cartItem.id },
-                // { "cart.excludedIngredients": cartItem.excludedIngredients },
-                // { "cart.selectedOptions": cartItem.selectedOptions },
-              ],
-            },
-            { $push: { cart: cartItem } }
-          );
+        : await db
+            .collection("users")
+            .updateOne(
+              { email: currentUser.email },
+              { $push: { cart: cartItem } }
+            );
 
     client.close();
 
@@ -267,13 +260,11 @@ const deleteItemFromCart = async (req, res) => {
 
     client.close();
 
-    console.log("result: ", result.modifiedCount);
-
-    result
+    result.modifiedCount > 0
       ? res.status(200).json({
           status: 200,
           success: true,
-          data: result,
+          data: id,
           message: `Item deleted from cart!`,
         })
       : res.status(404).json({
@@ -316,26 +307,58 @@ const createUser = async (req, res) => {
   }
 };
 
-// const validateUserToken = async (req, res) => {
-//   const userToken = req.body;
-//   console.log("userToken: ", userToken);
-//   const client = new MongoClient(MONGO_URI);
-//   try {
-//     await client.connect();
-//     const db = client.db("CAPSTONE");
-//     const result = await db.collection("userToken").replaceOne(userToken);
+const placeOrder = async (req, res) => {
+  const newOrder = { ...req.body, _id: uuidv4(), status: "open" };
+  const client = new MongoClient(MONGO_URI);
+  try {
+    await client.connect();
+    const db = client.db("CAPSTONE");
+    const result = await db.collection("orders").insertOne(newOrder);
 
-//     result &&
-//       res.status(200).json({
-//         status: 200,
-//         success: true,
-//         data: result,
-//         message: `New user validated!`,
-//       });
-//   } catch (err) {
-//     console.log("Error: ", err);
-//   }
-// };
+    result
+      ? res.status(200).json({
+          status: 200,
+          success: true,
+          data: result,
+          message: `New order placed!`,
+        })
+      : res.status(400).json({
+          status: 400,
+          message: `Something went wrong!`,
+        });
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
+
+const clearTheCart = async (req, res) => {
+  const currentUserEmail = req.params.email;
+  console.log("currentUser: ", req.params.email);
+  const client = new MongoClient(MONGO_URI);
+  try {
+    await client.connect();
+    const db = client.db("CAPSTONE");
+    const result = await db
+      .collection("users")
+      .updateOne({ email: currentUserEmail }, { $unset: { cart: "" } });
+
+    client.close();
+
+    result.modifiedCount > 0
+      ? res.status(200).json({
+          status: 200,
+          success: true,
+          data: result,
+          message: `Cart cleared!`,
+        })
+      : res.status(404).json({
+          status: 404,
+          message: `Something went wrong!`,
+        });
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
 
 module.exports = {
   getCategories,
@@ -348,4 +371,6 @@ module.exports = {
   updateQuantityInCart,
   deleteItemFromCart,
   createUser,
+  placeOrder,
+  clearTheCart,
 };

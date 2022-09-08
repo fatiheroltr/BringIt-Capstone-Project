@@ -2,11 +2,11 @@ import Logo from "./Logo";
 import Navigation from "./Navigation";
 import styled from "styled-components";
 
-const Header = () => {
+const Header = ({ navigation }) => {
   return (
     <Wrapper>
       <Logo />
-      <Navigation />
+      {navigation && <Navigation />}
     </Wrapper>
   );
 };

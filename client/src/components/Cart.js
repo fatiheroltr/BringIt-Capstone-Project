@@ -9,6 +9,7 @@ import { IoIosPlay } from "react-icons/io";
 import { v4 as uuidv4 } from "uuid";
 import { useAuth0 } from "@auth0/auth0-react";
 import { UserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const {
@@ -23,17 +24,10 @@ const Cart = () => {
 
   const { user, isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
   const { currentUser } = useContext(UserContext);
-
+  const navigate = useNavigate();
   const [subTotal, setSubTotal] = useState(0);
   const [updatingCart, setUpdatingCart] = useState(false);
   const [updatedProduct, setUpdatedProduct] = useState();
-  const [token, setToken] = useState();
-
-  if (localStorage.getItem("token") === null) {
-    const newToken = uuidv4();
-    localStorage.setItem("token", JSON.stringify(newToken));
-    setToken(newToken);
-  }
 
   const patchCart = async (updateObject) => {
     if (currentUser) {
@@ -101,7 +95,6 @@ const Cart = () => {
     }
     setSubTotal(newSubTotal);
   }, [cart]);
-
   return (
     <Wrapper>
       <Container
@@ -117,7 +110,9 @@ const Cart = () => {
           <CartIcon>
             <CartImg />
           </CartIcon>
-          <CartTitle>Your Cart</CartTitle>
+          <CartTitle>
+            {user && user.given_name ? user.given_name + "'s" : "Your"} Cart
+          </CartTitle>
         </CartTitleContainer>
 
         {cart && cart.length > 0 ? (
@@ -190,7 +185,12 @@ const Cart = () => {
                                     (ingredient) => {
                                       return (
                                         <Excludes key={uuidv4()}>
-                                          {ingredient.name},{" "}
+                                          {product.excludedIngredients.indexOf(
+                                            ingredient
+                                          ) ===
+                                          product.excludedIngredients.length - 1
+                                            ? ingredient.name
+                                            : ingredient.name + ", "}
                                         </Excludes>
                                       );
                                     }
@@ -206,7 +206,12 @@ const Cart = () => {
                                   {product.selectedOptions.map((option) => {
                                     return (
                                       <Options key={uuidv4()}>
-                                        {option.name} (${option.price}),{" "}
+                                        {product.selectedOptions.indexOf(
+                                          option
+                                        ) ===
+                                        product.selectedOptions.length - 1
+                                          ? `${option.name} ($${option.price})`
+                                          : `${option.name} ($${option.price}), `}
                                       </Options>
                                     );
                                   })}
@@ -253,7 +258,12 @@ const Cart = () => {
                 </span>
               </TotalContentSection>
             </TotalDetailsContainer>
-            <CheckoutButton>
+            <CheckoutButton
+              onClick={() => {
+                subTotal && navigate("/checkout", { state: { subTotal } });
+                setIsCartOpen(false);
+              }}
+            >
               <CheckoutIcon />
               CHECKOUT
             </CheckoutButton>
@@ -319,6 +329,13 @@ const CheckoutButton = styled.button`
   align-items: center;
   justify-content: center;
   gap: 7px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+
+  &:hover {
+    scale: 1.1;
+    background-color: var(--primary-color);
+  }
 `;
 
 const CheckoutIcon = styled(MdPayment)`
@@ -375,6 +392,12 @@ const Container = styled.div`
 
   &:focus {
     outline: none;
+  }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
   }
 `;
 

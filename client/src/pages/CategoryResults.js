@@ -25,8 +25,8 @@ const CategoryResults = () => {
 
   return (
     <Wrapper>
-      <Header />
-      <Content marginTop={true}>
+      <Header navigation={true} />
+      <Content marginTop={true} cart={true}>
         <CategoryName>
           {category.substring(0, 1).toUpperCase() + category.substring(1)}
         </CategoryName>

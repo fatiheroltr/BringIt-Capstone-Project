@@ -34,7 +34,7 @@ const Restaurant = () => {
 
   return (
     <Wrapper>
-      <Header />
+      <Header navigation={true} />
       {restaurant && products ? (
         <>
           <BannerContainer bannerSrc={extractImageUrl(id, "jpg", "banner")}>
@@ -53,7 +53,7 @@ const Restaurant = () => {
               </StoreHours>
             </StoreInfo>
           </BannerContainer>
-          <Content marginTop={false}>
+          <Content marginTop={false} cart={true}>
             <ProductsWrapper>
               {uniqueCategories.map((category) => {
                 return (

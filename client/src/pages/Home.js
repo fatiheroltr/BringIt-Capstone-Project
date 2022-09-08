@@ -10,8 +10,8 @@ import Content from "../components/Content";
 const Home = () => {
   return (
     <Wrapper>
-      <Header />
-      <Content marginTop={true}>
+      <Header navigation={true} />
+      <Content marginTop={true} cart={true}>
         <Hero />
         <CategoryBar />
         <HowItWorks />

@@ -3,6 +3,7 @@ import GlobalStyles from "./GlobalStyles";
 import Home from "../pages/Home";
 import Restaurant from "../pages/Restaurant";
 import CategoryResults from "../pages/CategoryResults";
+import Checkout from "../pages/Checkout";
 import AuthWithRedirectProvider from "../context/AuthWithRedirectProvider";
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/restaurant/:id" element={<Restaurant />} />
           <Route path="/category/:category" element={<CategoryResults />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </AuthWithRedirectProvider>
     </BrowserRouter>

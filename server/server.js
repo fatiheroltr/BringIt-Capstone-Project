@@ -16,6 +16,8 @@ const {
   updateQuantityInCart,
   deleteItemFromCart,
   createUser,
+  placeOrder,
+  clearTheCart,
 } = require("./handlers");
 
 express()
@@ -47,7 +49,9 @@ express()
   .patch("/api/add-to-cart", addToCart)
   .patch("/api/update-quantity-in-cart", updateQuantityInCart)
   .patch("/api/delete-item-from-cart", deleteItemFromCart)
+  .patch("/api/clear-the-cart/:email", clearTheCart)
 
   .put("/api/create-user", createUser)
+  .put("/api/place-order", placeOrder)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
