@@ -4,6 +4,54 @@ require("dotenv").config();
 const { MONGO_URI } = process.env;
 const { v4: uuidv4 } = require("uuid");
 
+const getProducts = async (req, res) => {
+  const client = new MongoClient(MONGO_URI);
+  try {
+    await client.connect();
+    const db = client.db("CAPSTONE");
+    const result = await db.collection("products").find().toArray();
+    client.close();
+
+    result.length > 0
+      ? res.status(200).json({
+          status: 200,
+          data: result,
+          message: `All products are loaded!`,
+        })
+      : res.status(404).json({
+          status: 404,
+          message: `Couldn't find any product!`,
+        });
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
+
+const getProductById = async (req, res) => {
+  const productId = parseInt(req.params.id);
+  console.log("productId: ", productId);
+  const client = new MongoClient(MONGO_URI);
+  try {
+    await client.connect();
+    const db = client.db("CAPSTONE");
+    const result = await db.collection("products").findOne({ _id: productId });
+    client.close();
+
+    result
+      ? res.status(200).json({
+          status: 200,
+          data: result,
+          message: `Found the product!`,
+        })
+      : res.status(404).json({
+          status: 404,
+          message: `Couldn't find any product!`,
+        });
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
+
 const getCategories = async (req, res) => {
   const client = new MongoClient(MONGO_URI);
   try {
@@ -361,6 +409,8 @@ const clearTheCart = async (req, res) => {
 };
 
 module.exports = {
+  getProducts,
+  getProductById,
   getCategories,
   getProductsByCategory,
   getRestaurantById,

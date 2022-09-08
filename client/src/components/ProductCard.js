@@ -171,10 +171,15 @@ const ProductCard = ({ productData, restaurantData }) => {
           <BigImage src={extractImageUrl(_id, "png")} />
           <DialogNameContainer>
             <Name>{name}</Name>
-            <Store>
-              <StoreIcon src={extractImageUrl("store-icon", "svg")} />
-              {store}
-            </Store>
+            <StyledLink
+              to={`/restaurants/${store_id}`}
+              onClick={() => window.scrollTo(0, 0)}
+            >
+              <Store>
+                <StoreIcon src={extractImageUrl("store-icon", "svg")} />
+                {store}
+              </Store>
+            </StyledLink>
           </DialogNameContainer>
 
           <Desc>{desc}</Desc>
@@ -262,7 +267,7 @@ const ProductCard = ({ productData, restaurantData }) => {
       <Name>{name}</Name>
       <Desc>{desc}</Desc>
       <StyledLink
-        to={`/restaurant/${store_id}`}
+        to={`/restaurants/${store_id}`}
         onClick={() => window.scrollTo(0, 0)}
       >
         <Store>
@@ -333,7 +338,7 @@ const DialogPriceContainer = styled.div`
   gap: 30px;
   justify-content: flex-end;
   margin-top: 25px;
-  background-color: var(--ingredient-removable);
+  background-color: var(--ingredient);
   bottom: 0;
   width: 100%;
   left: 0;

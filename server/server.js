@@ -6,6 +6,8 @@ const morgan = require("morgan");
 const PORT = 4000;
 
 const {
+  getProducts,
+  getProductById,
   getCategories,
   getProductsByCategory,
   getRestaurantById,
@@ -39,6 +41,8 @@ express()
   .use("/", express.static(__dirname + "/"))
 
   /// REST endpoints
+  .get("/api/get-products", getProducts)
+  .get("/api/get-product-by-id/:id", getProductById)
   .get("/api/get-categories", getCategories)
   .get("/api/get-products-by-category/:category", getProductsByCategory)
   .get("/api/get-restaurants", getRestaurants)

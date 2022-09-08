@@ -1,25 +1,17 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { extractImageUrl } from "../utils";
 import styled from "styled-components";
 import CategoryBarSkeleton from "./Skeletons/CategoryBarSkeleton";
 import { useAuth0 } from "@auth0/auth0-react";
+import { CategoriesContext } from "../context/CategoriesContext";
 
 const CategoryBar = () => {
   const { isAuthenticated } = useAuth0();
-  const [categories, setCategories] = useState();
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch("/api/get-categories");
-      const result = await response.json();
-      setCategories(result.data);
-    };
-    fetchCategories();
-  }, []);
+  const { categories, isCategoriesLoaded } = useContext(CategoriesContext);
 
   const sortedCategories =
-    categories && categories.sort((a, b) => a._id - b._id);
+    isCategoriesLoaded && categories.sort((a, b) => a._id - b._id);
 
   return (
     <Wrapper>
@@ -43,10 +35,10 @@ const CategoryBar = () => {
           // }
           return (
             <Link
-              to={`category/${category.name.toLowerCase()}`}
+              to={`categories/${category.name.toLowerCase()}`}
               key={category._id}
               onClick={() => window.scrollTo(0, 0)}
-              redirect_uri={`category/${category.name.toLowerCase()}`}
+              redirect_uri={`categories/${category.name.toLowerCase()}`}
             >
               <Circle>
                 <CategoryImage

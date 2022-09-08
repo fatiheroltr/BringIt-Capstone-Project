@@ -9,8 +9,8 @@ export default createGlobalStyle`
 
       --border-color: rgba(40, 72, 94, 0.15);
 
-      --ingredient-removable: rgba(40, 72, 94, .1);
-      --ingredient: rgba(0, 142, 167, .1);
+      --ingredient-removable: rgba(0, 142, 167, .1);
+      --ingredient: rgba(40, 72, 94, .1);
       --ingredient-option: rgba(240, 90, 40, .1);
     }
 
