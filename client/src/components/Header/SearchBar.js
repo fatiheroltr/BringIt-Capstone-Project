@@ -41,7 +41,7 @@ const SearchBar = () => {
 
   const handleSelect = (selectedTitle) => {
     navigate(`/products/${selectedTitle}`, { replace: true });
-    // navigate(0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

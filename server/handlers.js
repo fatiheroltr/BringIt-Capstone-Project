@@ -29,7 +29,6 @@ const getProducts = async (req, res) => {
 
 const getProductById = async (req, res) => {
   const productId = parseInt(req.params.id);
-  console.log("productId: ", productId);
   const client = new MongoClient(MONGO_URI);
   try {
     await client.connect();

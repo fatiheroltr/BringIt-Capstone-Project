@@ -173,7 +173,7 @@ const ProductCard = ({ productData, restaurantData }) => {
             <Name>{name}</Name>
             <StyledLink
               to={`/restaurants/${store_id}`}
-              onClick={() => window.scrollTo(0, 0)}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             >
               <Store>
                 <StoreIcon src={extractImageUrl("store-icon", "svg")} />
@@ -268,7 +268,7 @@ const ProductCard = ({ productData, restaurantData }) => {
       <Desc>{desc}</Desc>
       <StyledLink
         to={`/restaurants/${store_id}`}
-        onClick={() => window.scrollTo(0, 0)}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         <Store>
           <StoreIcon src={extractImageUrl("store-icon", "svg")} />
@@ -350,6 +350,7 @@ const DialogPriceContainer = styled.div`
 const DialogNameContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const Title = styled.span`
@@ -450,6 +451,7 @@ const Image = styled.button`
     }
     & ${DetailsIcon} {
       opacity: 1;
+      cursor: pointer;
     }
   }
 `;
@@ -458,6 +460,8 @@ const BigImage = styled.img`
   width: 100%;
   height: 380px;
   margin-bottom: -5px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 `;
 
 const Name = styled.span`

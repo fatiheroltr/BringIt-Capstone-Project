@@ -11,6 +11,7 @@ const Content = ({ children, marginTop }) => {
 };
 
 const Wrapper = styled.div`
+  position: relative;
   margin-top: ${(props) => props.marginTop && "117px"};
   min-height: calc(100vh - 377px);
   width: auto;

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RestaurantsContext } from "../context/RestaurantsContext";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
@@ -8,54 +8,148 @@ import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
 import styled from "styled-components";
 import Content from "../components/Content";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
+import { ProductsContext } from "../context/ProductsContext";
+import { CategoriesContext } from "../context/CategoriesContext";
+import {
+  RiCheckboxCircleFill,
+  RiArrowDownSFill,
+  RiArrowLeftSFill,
+  RiCheckboxBlankCircleLine,
+} from "react-icons/ri";
 
 const CategoryResults = () => {
-  const { category } = useParams();
+  const { categoryParam } = useParams();
   const { restaurants, isRestaurantsLoaded } = useContext(RestaurantsContext);
-  const [products, setProducts] = useState();
+  const { products } = useContext(ProductsContext);
+  const { categories, isCategoriesLoaded } = useContext(CategoriesContext);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([
+    categoryParam.substring(0, 1).toUpperCase() + categoryParam.substring(1),
+  ]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch(`/api/get-products-by-category/${category}`);
-      const result = await response.json();
-      setProducts(result.data);
-    };
-    fetchProducts();
-  }, []);
+    if (
+      (selectedCategories && selectedCategories.length === 0) ||
+      (selectedCategories && selectedCategories[0] === "All")
+    ) {
+      if (categories) {
+        const allCategoriesNamesFiltered = categories.map((category) => {
+          return category.name;
+        });
+        setSelectedCategories(allCategoriesNamesFiltered);
+      }
+    }
+  }, [selectedCategories, categories]);
+
+  const handleClick = (categoryName) => {
+    if (!selectedCategories.includes(categoryName)) {
+      setSelectedCategories([...selectedCategories, categoryName]);
+    } else {
+      const newselectedCategories = selectedCategories.filter(
+        (category) => category.toUpperCase() !== categoryName.toUpperCase()
+      );
+      setSelectedCategories(newselectedCategories);
+    }
+  };
 
   return (
     <Wrapper>
       <Header navigation={true} />
       <Content marginTop={true} cart={true}>
-        <CategoryName>
-          {category.substring(0, 1).toUpperCase() + category.substring(1)}
-        </CategoryName>
-        {products && isRestaurantsLoaded ? (
-          <ProductsWrapper>
-            {products.map((product) => {
+        <CategorySelector
+          onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+          categoriesOpen={isCategoriesOpen}
+        >
+          <span>All Categories</span>
+          {isCategoriesOpen ? <RiArrowDownSFill /> : <RiArrowLeftSFill />}
+        </CategorySelector>
+        <Select isCategoriesOpen={isCategoriesOpen}>
+          {isCategoriesLoaded &&
+            categories.map((category) => {
               return (
-                <ProductCard
-                  productData={product}
-                  restaurantData={restaurants.find(
-                    (restaurant) => restaurant._id === product.store_id
+                <CategoryCheckbox
+                  key={category._id}
+                  onClick={() => handleClick(category.name)}
+                >
+                  {selectedCategories &&
+                  selectedCategories.includes(category.name) ? (
+                    <RiCheckboxCircleFill />
+                  ) : (
+                    <RiCheckboxBlankCircleLine />
                   )}
-                  key={product._id}
-                />
+                  {category.name}
+                </CategoryCheckbox>
               );
             })}
-          </ProductsWrapper>
-        ) : (
-          <ProductsWrapper>
-            {[...Array(8)].map((e, i) => (
-              <ProductCardSkeleton key={i} />
-            ))}
-          </ProductsWrapper>
-        )}
+        </Select>
+
+        {isCategoriesLoaded &&
+          selectedCategories &&
+          selectedCategories.map((category, index) => {
+            return (
+              <div key={index}>
+                <CategoryName>{category}</CategoryName>
+                {products && isRestaurantsLoaded ? (
+                  <ProductsWrapper>
+                    {products.map((product) => {
+                      if (
+                        product.category.toUpperCase() ===
+                        category.toUpperCase()
+                      )
+                        return (
+                          <ProductCard
+                            productData={product}
+                            restaurantData={restaurants.find(
+                              (restaurant) =>
+                                restaurant._id === product.store_id
+                            )}
+                            key={product._id}
+                          />
+                        );
+                    })}
+                  </ProductsWrapper>
+                ) : (
+                  <ProductsWrapper>
+                    {[...Array(8)].map((e, i) => (
+                      <ProductCardSkeleton key={i} />
+                    ))}
+                  </ProductsWrapper>
+                )}
+              </div>
+            );
+          })}
       </Content>
       <Footer />
     </Wrapper>
   );
 };
+
+const CategorySelector = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 16px;
+  position: absolute;
+  right: 0;
+  background-color: #fff;
+  border: none;
+  border-bottom: ${(props) =>
+    props.isCategoriesOpen
+      ? "2px solid var(--teal-color)"
+      : "2px solid var(--border-color)"};
+  padding: 0;
+  padding-bottom: 7px;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+  & span {
+    font-size: 18px;
+  }
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -67,16 +161,44 @@ const ProductsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 75px;
-  margin-bottom: 100px;
+  margin-bottom: 70px;
   grid-row-gap: 60px;
 `;
 
 const CategoryName = styled.p`
-  width: 1297px;
+  width: 100%;
   color: var(--primary-color);
   font-size: 30px;
   font-weight: 700;
   margin-bottom: 30px;
+`;
+
+const Select = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: absolute;
+  top: 30px;
+  right: -18px;
+  transition: 0.15s ease-in-out;
+  z-index: 99;
+  background-color: #fff;
+  padding: 20px;
+  padding-right: 35px;
+  opacity: ${(props) => (props.isCategoriesOpen ? "1" : "0")};
+  -webkit-box-shadow: -14px 16px 41px -12px rgba(0, 0, 0, 0.35);
+  box-shadow: -14px 16px 41px -12px rgba(0, 0, 0, 0.35);
+  border-radius: 10px;
+`;
+
+const CategoryCheckbox = styled.div`
+  color: var(--primary-color);
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  cursor: pointer;
 `;
 
 // export default CategoryResults;

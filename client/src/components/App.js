@@ -16,7 +16,10 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/restaurants/:id" element={<Restaurant />} />
           <Route path="/products/:id" element={<SearchResult />} />
-          <Route path="/categories/:category" element={<CategoryResults />} />
+          <Route
+            path="/categories/:categoryParam"
+            element={<CategoryResults />}
+          />
           <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </AuthWithRedirectProvider>

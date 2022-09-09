@@ -37,7 +37,7 @@ const CategoryBar = () => {
             <Link
               to={`categories/${category.name.toLowerCase()}`}
               key={category._id}
-              onClick={() => window.scrollTo(0, 0)}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               redirect_uri={`categories/${category.name.toLowerCase()}`}
             >
               <Circle>

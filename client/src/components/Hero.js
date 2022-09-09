@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { extractImageUrl } from "../utils";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <Wrapper>
       <HeroImage src={extractImageUrl("figure", "png")} />
@@ -16,6 +19,13 @@ const Hero = () => {
             <span>for you.</span>
           </p>
         </SecondLine>
+        <StartButton
+          onClick={() => {
+            navigate("/categories/all");
+          }}
+        >
+          Let’s get started
+        </StartButton>
       </HeroText>
     </Wrapper>
   );
@@ -28,13 +38,38 @@ const Wrapper = styled.div`
   margin: 100px;
 `;
 
+const StartButton = styled.button`
+  display: flex;
+  align-items: center;
+  align-self: flex-end;
+  font-size: 22px;
+  color: var(--primary-color);
+  font-weight: 700;
+  height: 47px;
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  background-color: #fff;
+  cursor: pointer;
+  margin-top: 35px;
+  padding: 10px 30px;
+
+  &:hover:enabled {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+`;
+
 const HeroImage = styled.img`
   width: 574px;
   margin-right: 55px;
   align-self: center;
+  margin-top: -10px;
 `;
 
-const HeroText = styled.div``;
+const HeroText = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const FirstLine = styled.div`
   display: flex;
@@ -45,7 +80,7 @@ const FirstLine = styled.div`
   text-align: right;
   letter-spacing: -0.04em;
   position: relative;
-  margin-top: 55px;
+  margin-top: 15px;
 
   & span {
     color: #fff;
