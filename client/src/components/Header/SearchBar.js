@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ProductsContext } from "../../context/ProductsContext";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import { mobile } from "../../utils";
 
 const SearchBar = () => {
   const { products, isProductsLoaded } = useContext(ProductsContext);
@@ -241,6 +242,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 500px;
   margin-right: 40px;
+  ${mobile({ display: "none" })};
 `;
 
 const Prediction = styled.span`

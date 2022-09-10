@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { extractImageUrl } from "../../utils";
+import { extractImageUrl, mobile } from "../../utils";
 
 const Logo = () => {
   return (
@@ -29,6 +29,7 @@ const Slogan = styled.span`
   letter-spacing: -0.04em;
   margin-top: 10px;
   margin-left: 12px;
+  ${mobile({ display: "none", marginLeft: "0" })};
 `;
 
 export default Logo;

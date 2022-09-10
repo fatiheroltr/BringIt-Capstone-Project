@@ -16,6 +16,7 @@ import {
   RiArrowLeftSFill,
   RiCheckboxBlankCircleLine,
 } from "react-icons/ri";
+import { mobile } from "../utils";
 
 const CategoryResults = () => {
   const { categoryParam } = useParams();
@@ -163,6 +164,9 @@ const ProductsWrapper = styled.div`
   grid-column-gap: 75px;
   margin-bottom: 70px;
   grid-row-gap: 60px;
+  ${mobile({
+    gridTemplateColumns: "repeat(1, 1fr)",
+  })};
 `;
 
 const CategoryName = styled.p`

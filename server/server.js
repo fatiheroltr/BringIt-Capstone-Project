@@ -20,6 +20,7 @@ const {
   createUser,
   placeOrder,
   clearTheCart,
+  getOrdersByEmail,
 } = require("./handlers");
 
 express()
@@ -49,6 +50,7 @@ express()
   .get("/api/get-restaurant-by-id/:id", getRestaurantById)
   .get("/api/get-products-by-store/:id", getProductsByStore)
   .get("/api/get-cart/:email", getCart)
+  .get("/api/get-orders-by-email", getOrdersByEmail)
 
   .patch("/api/add-to-cart", addToCart)
   .patch("/api/update-quantity-in-cart", updateQuantityInCart)

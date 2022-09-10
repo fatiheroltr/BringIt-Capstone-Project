@@ -1,17 +1,20 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import styled from "styled-components";
-import LogoutButton from "../LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { extractImageUrl } from "../../utils";
 import { UserContext } from "../../context/UserContext";
 import LoadingCircle from "../LoadingCircle";
+import { BiUserPin, BiShoppingBag, BiLogOut } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const NavIcons = () => {
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const { cart, isCartLoaded, isCartOpen, setIsCartOpen } =
     useContext(CartContext);
-
-  const { user, isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect, isLoading, logout } =
+    useAuth0();
+  const navigate = useNavigate();
 
   const {
     currentUser,
@@ -55,8 +58,14 @@ const NavIcons = () => {
           onClick={() => !isAuthenticated && loginWithRedirect()}
         />
       </MessageIconContainer>
-      <LogoutButton />
-      <ProfileIconContainer onClick={() => loginWithRedirect()}>
+
+      <ProfileIconContainer
+        onClick={() =>
+          !isAuthenticated
+            ? loginWithRedirect()
+            : setIsProfileMenuOpen(!isProfileMenuOpen)
+        }
+      >
         {!isLoading ? (
           <ProfileIcon
             src={
@@ -64,11 +73,27 @@ const NavIcons = () => {
                 ? user.picture
                 : extractImageUrl("profile-icon", "svg")
             }
+            referrerPolicy="no-referrer"
           />
         ) : (
           <LoadingCircle circleSize={28} />
         )}
       </ProfileIconContainer>
+      <ProfileMenu isProfileMenuOpen={isProfileMenuOpen}>
+        <MenuArrow src={extractImageUrl("menu-arrow", "svg")} />
+        <Row>
+          <BiUserPin size={22} />
+          Profile
+        </Row>
+        <Row onClick={() => navigate("/orders")}>
+          <BiShoppingBag size={22} />
+          Orders
+        </Row>
+        <Row onClick={() => logout()}>
+          <BiLogOut size={22} />
+          Logout
+        </Row>
+      </ProfileMenu>
     </Wrapper>
   );
 };
@@ -77,6 +102,41 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;
+  position: relative;
+`;
+
+const ProfileMenu = styled.div`
+  position: absolute;
+  right: -15px;
+  top: 45px;
+  opacity: ${(props) => (props.isProfileMenuOpen ? "1" : "0")};
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  -webkit-box-shadow: -14px 16px 41px -12px rgba(0, 0, 0, 0.35);
+  box-shadow: -5px 10px 15px -12px rgba(0, 0, 0, 0.25);
+  transition: 0.2s ease-in-out;
+`;
+
+const Row = styled.div`
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  &:hover {
+    color: var(--teal-color);
+  }
+`;
+
+const MenuArrow = styled.img`
+  position: absolute;
+  top: -11px;
+  right: 18px;
 `;
 
 const CartIconContainer = styled.button`

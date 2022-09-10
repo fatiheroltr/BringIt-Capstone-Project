@@ -336,6 +336,7 @@ const createUser = async (req, res) => {
     const result =
       checkIfExist === 0 && (await db.collection("users").insertOne(user));
     // : await db.collection("users").updateOne({ cart: user.cart });
+    client.close();
 
     result &&
       res.status(200).json({
@@ -361,6 +362,7 @@ const placeOrder = async (req, res) => {
     await client.connect();
     const db = client.db("CAPSTONE");
     const result = await db.collection("orders").insertOne(newOrder);
+    client.close();
 
     result
       ? res.status(200).json({
@@ -407,6 +409,33 @@ const clearTheCart = async (req, res) => {
   }
 };
 
+const getOrdersByEmail = async (req, res) => {
+  const email = req.body;
+  const client = new MongoClient(MONGO_URI);
+  try {
+    await client.connect();
+    const db = client.db("CAPSTONE");
+    const result = await db
+      .collection("orders")
+      .find({ email: email })
+      .toArray();
+    client.close();
+
+    result.length > 0
+      ? res.status(200).json({
+          status: 200,
+          data: result,
+          message: `Orders are loaded!`,
+        })
+      : res.status(404).json({
+          status: 404,
+          message: `Couldn't find any order!`,
+        });
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
@@ -422,4 +451,5 @@ module.exports = {
   createUser,
   placeOrder,
   clearTheCart,
+  getOrdersByEmail,
 };

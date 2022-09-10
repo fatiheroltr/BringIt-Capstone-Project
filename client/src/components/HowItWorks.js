@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { extractImageUrl } from "../utils";
+import { extractImageUrl, mobile } from "../utils";
 
 const HowItWorks = () => {
   return (
@@ -55,12 +55,21 @@ const Wrapper = styled.div`
 `;
 
 const IconsWrapper = styled.div`
+  ${mobile({
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "70px",
+    marginTop: "60px",
+  })};
   display: flex;
   margin-top: 85px;
   gap: 85px;
 `;
 
 const Title = styled.span`
+  ${mobile({
+    fontSize: "40px",
+  })};
   color: var(--primary-color);
   font-weight: 700;
   font-size: 45px;
@@ -68,6 +77,11 @@ const Title = styled.span`
 `;
 
 const Desc = styled.span`
+  ${mobile({
+    fontSize: "22px",
+    padding: "0 20px",
+    textAlign: "center",
+  })};
   color: var(--primary-color);
   font-weight: 500;
   font-size: 22px;

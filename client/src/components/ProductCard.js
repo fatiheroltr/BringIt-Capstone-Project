@@ -4,7 +4,7 @@ import { TbListSearch } from "react-icons/tb";
 import styled from "styled-components";
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import "@reach/dialog/styles.css";
-import { extractImageUrl } from "../utils";
+import { extractImageUrl, mobile } from "../utils";
 import { CartContext } from "../context/CartContext";
 import LoadingCircle from "./LoadingCircle";
 import { UserContext } from "../context/UserContext";
@@ -157,15 +157,15 @@ const ProductCard = ({ productData, restaurantData }) => {
         isOpen={showDialog}
         onDismiss={close}
       >
-        <DialogContent
-          style={{
-            boxShadow: "0px 10px 50px hsla(0, 0%, 0%, 0.33)",
-            width: "610px",
-            borderRadius: "20px",
-            padding: "17px",
-            position: "relative",
-            marginTop: "3%",
-          }}
+        <StyledDialogContent
+          // style={{
+          //   boxShadow: "0px 10px 50px hsla(0, 0%, 0%, 0.33)",
+          //   width: "610px",
+          //   borderRadius: "20px",
+          //   padding: "17px",
+          //   position: "relative",
+          //   marginTop: "3%",
+          // }}
           aria-label={productData.name}
         >
           <BigImage src={extractImageUrl(_id, "png")} />
@@ -258,7 +258,7 @@ const ProductCard = ({ productData, restaurantData }) => {
           <DialogCloseButton className="close-button" onClick={close}>
             X
           </DialogCloseButton>
-        </DialogContent>
+        </StyledDialogContent>
       </DialogOverlay>
 
       <Image imageSrc={extractImageUrl(_id, "png")} onClick={open}>
@@ -310,6 +310,19 @@ const Wrapper = styled.div`
   width: 268px;
   display: flex;
   flex-direction: column;
+`;
+
+const StyledDialogContent = styled(DialogContent)`
+  box-shadow: 0px 10px 50px hsla(0, 0%, 0%, 0.33);
+  width: 610px;
+  border-radius: 20px;
+  padding: 17px;
+  position: relative;
+  margin-top: 3%;
+  ${mobile({
+    width: "90%",
+    marginTop: "20%",
+  })};
 `;
 
 const Container = styled.div`
@@ -458,7 +471,7 @@ const Image = styled.button`
 
 const BigImage = styled.img`
   width: 100%;
-  height: 380px;
+  /* height: 380px; */
   margin-bottom: -5px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;

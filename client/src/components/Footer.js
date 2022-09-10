@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Logo from "./Header/Logo";
-import { extractImageUrl } from "../utils";
+import { extractImageUrl, mobile } from "../utils";
 
 const Footer = () => {
   return (
@@ -56,6 +56,7 @@ const Wrapper = styled.div`
   max-width: 1440px;
   height: 260px;
   padding: 15px 44px;
+  ${mobile({ display: "none" })};
 `;
 const IdentityContainer = styled.div``;
 const Socials = styled.div`

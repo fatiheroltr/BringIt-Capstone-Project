@@ -13,6 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CheckoutItemSkeleton from "../components/Skeletons/CheckoutItemSkeleton";
 import CheckoutTotalSkeleton from "../components/Skeletons/CheckoutTotalSkeleton";
 import { FiAlertCircle } from "react-icons/fi";
+import moment from "moment";
 
 const Checkout = () => {
   const { cart, isCartLoaded, setTimeToUpdateCart, timeToUpdateCart } =
@@ -24,6 +25,7 @@ const Checkout = () => {
   const [deliveryName, setDeliveryName] = useState();
   const [deliveryInstructions, setDeliveryInstructions] = useState();
   const [locations, setLocation] = useState();
+
   const navigate = useNavigate();
 
   console.log("deliveryName: ", deliveryName);
@@ -40,6 +42,7 @@ const Checkout = () => {
       instructions: deliveryInstructions,
       lat: locations.latitude,
       lng: locations.longitude,
+      date: moment().format("lll"),
     };
 
     const placeOptions = {

@@ -261,6 +261,7 @@ const Cart = () => {
             <CheckoutButton
               onClick={() => {
                 subTotal && navigate("/checkout", { state: { subTotal } });
+                window.scrollTo({ top: 0, behavior: "smooth" });
                 setIsCartOpen(false);
               }}
             >

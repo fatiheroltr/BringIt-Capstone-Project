@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { extractImageUrl } from "../utils";
+import { extractImageUrl, mobile } from "../utils";
 import styled from "styled-components";
 import CategoryBarSkeleton from "./Skeletons/CategoryBarSkeleton";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -60,6 +60,11 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   gap: 42px;
+  ${mobile({
+    gap: "60px 5vw",
+    flexWrap: "wrap",
+    marginTop: "130px",
+  })};
 `;
 
 const Circle = styled.div`

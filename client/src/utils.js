@@ -2,12 +2,12 @@ import { css } from "styled-components";
 
 export const mobile = (props) => {
   return css`
-    @media only screen and (max-width: 380px) {
+    @media only screen and (max-width: 767px) {
       ${props}
     }
   `;
 };
-// $mobile{({width: "50px"})}
+// ${mobile({ width: "50px" })};
 
 export const extractImageUrl = (imageId, format, type) => {
   /**

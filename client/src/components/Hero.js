@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { extractImageUrl } from "../utils";
+import { extractImageUrl, mobile } from "../utils";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -13,11 +13,7 @@ const Hero = () => {
           Don’t you have time to<span>grab some lunch?</span>
         </FirstLine>
         <SecondLine>
-          Let’s find someone
-          <p>
-            <span>who has</span>
-            <span>for you.</span>
-          </p>
+          Let’s find someone<br></br> who has<span>for you.</span>
         </SecondLine>
         <StartButton
           onClick={() => {
@@ -36,9 +32,21 @@ const Wrapper = styled.div`
   justify-content: center;
   margin-top: 50px;
   margin: 100px;
+  ${mobile({
+    flexDirection: "column",
+    marginTop: "35px",
+    margin: "0",
+  })};
 `;
 
 const StartButton = styled.button`
+  ${mobile({
+    width: "70%",
+    marginRight: "0",
+    justifyContent: "center",
+    alignSelf: "center",
+    marginTop: "65px",
+  })};
   display: flex;
   align-items: center;
   align-self: flex-end;
@@ -61,6 +69,10 @@ const StartButton = styled.button`
 
 const HeroImage = styled.img`
   width: 574px;
+  ${mobile({
+    width: "90%",
+    margin: "60px 0px",
+  })};
   margin-right: 55px;
   align-self: center;
   margin-top: -10px;
@@ -72,6 +84,8 @@ const HeroText = styled.div`
 `;
 
 const FirstLine = styled.div`
+  ${mobile({ textAlign: "center", fontSize: "10vw" })};
+
   display: flex;
   flex-direction: column;
   color: var(--primary-color);
@@ -81,25 +95,20 @@ const FirstLine = styled.div`
   letter-spacing: -0.04em;
   position: relative;
   margin-top: 15px;
+  display: inline-block;
 
   & span {
     color: #fff;
-  }
-
-  &::after {
-    content: "";
-    width: 505px;
-    height: 63px;
+    display: inline-block;
     background-color: var(--primary-color);
-    position: absolute;
-    z-index: -1;
-    bottom: 0;
-    right: -12px;
-    transform: rotate(-1.12deg);
+    padding: 0 15px;
+    transform: rotate(-2deg);
   }
 `;
 
 const SecondLine = styled.div`
+  ${mobile({ textAlign: "center", fontSize: "10vw" })};
+
   display: flex;
   flex-direction: column;
   color: var(--accent-color);
@@ -108,23 +117,17 @@ const SecondLine = styled.div`
   text-align: right;
   letter-spacing: -0.04em;
   position: relative;
+  margin-top: 15px;
+  display: inline-block;
   margin-top: 30px;
 
-  & span:nth-child(2) {
+  & span {
     color: #fff;
-    margin-left: 20px;
-  }
-
-  &::after {
-    content: "";
-    width: 223px;
-    height: 63px;
+    display: inline-block;
     background-color: var(--accent-color);
-    position: absolute;
-    z-index: -1;
-    bottom: 0;
-    right: -8px;
-    transform: rotate(-1.12deg);
+    padding: 0 15px;
+    margin-left: 15px;
+    transform: rotate(-2deg);
   }
 `;
 
