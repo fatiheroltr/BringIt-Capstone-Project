@@ -6,7 +6,6 @@ import CategoryResults from "../pages/CategoryResults";
 import SearchResult from "../pages/SearchResult";
 import Checkout from "../pages/Checkout";
 import AuthWithRedirectProvider from "../context/AuthWithRedirectProvider";
-import Orders from "../pages/Orders";
 import Dashboard from "../pages/Dashboard";
 
 const App = () => {
@@ -23,7 +22,7 @@ const App = () => {
             element={<CategoryResults />}
           />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/orders" element={<Orders />} />
+          {/* <Route path="/orders" element={<Orders />} /> */}
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </AuthWithRedirectProvider>

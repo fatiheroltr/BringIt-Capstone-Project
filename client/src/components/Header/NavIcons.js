@@ -5,7 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { extractImageUrl } from "../../utils";
 import { UserContext } from "../../context/UserContext";
 import LoadingCircle from "../LoadingCircle";
-import { BiUserPin, BiShoppingBag, BiLogOut } from "react-icons/bi";
+import { BiUserPin, BiLogOut } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 
 const NavIcons = () => {
@@ -15,20 +15,18 @@ const NavIcons = () => {
   const { user, isAuthenticated, loginWithRedirect, isLoading, logout } =
     useAuth0();
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
+  // const [registeredUserEmail, setRegisteredUserEmail] = useState(false);
 
-  const {
-    currentUser,
-    setCurrentUser,
-    // isCurrentUserLoaded,
-    // setIsCurrentUserLoaded,
-    setUser,
-    error,
-    setError,
-  } = useContext(UserContext);
+  // useEffect(() => {
+  //   if (user && registeredUserEmail !== user.email) {
+  //     setUser(user);
+  //   }
+  // }, [user, isAuthenticated]);
 
   useEffect(() => {
     isAuthenticated && setUser(user);
-  }, [isAuthenticated]);
+  }, [user]);
 
   let cartQuantity = 0;
   cart &&
@@ -81,13 +79,14 @@ const NavIcons = () => {
       </ProfileIconContainer>
       <ProfileMenu isProfileMenuOpen={isProfileMenuOpen}>
         <MenuArrow src={extractImageUrl("menu-arrow", "svg")} />
-        <Row>
+        <Row
+          onClick={() => {
+            navigate("/dashboard");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
           <BiUserPin size={22} />
-          Profile
-        </Row>
-        <Row onClick={() => navigate("/orders")}>
-          <BiShoppingBag size={22} />
-          Orders
+          Dashboard
         </Row>
         <Row onClick={() => logout()}>
           <BiLogOut size={22} />

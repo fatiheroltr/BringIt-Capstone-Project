@@ -30,8 +30,7 @@ const Hero = () => {
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 50px;
-  margin: 100px;
+  margin: 100px 0;
   ${mobile({
     flexDirection: "column",
     marginTop: "35px",

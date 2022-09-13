@@ -25,42 +25,50 @@ const Checkout = () => {
   const [deliveryName, setDeliveryName] = useState();
   const [deliveryInstructions, setDeliveryInstructions] = useState();
   const [locations, setLocation] = useState();
+  const [total, setTotal] = useState(
+    (
+      state.subTotal +
+      state.subTotal * 0.15 +
+      state.subTotal * 0.15 +
+      state.subTotal * 0.1 +
+      (state.subTotal * tip) / 100
+    ).toFixed(2)
+  );
 
   const navigate = useNavigate();
-
-  console.log("deliveryName: ", deliveryName);
 
   useEffect(() => {
     isAuthenticated && setUser(user);
   }, [isAuthenticated]);
 
-  const handlePlaceOrder = async () => {
-    const orderObject = {
-      cart: cart,
-      name: deliveryName,
-      email: currentUser.email,
-      instructions: deliveryInstructions,
-      lat: locations.latitude,
-      lng: locations.longitude,
-      date: moment().format("lll"),
-    };
+  const handlePlaceOrder = () => {
+    const sendOrder = async () => {
+      const orderObject = {
+        cart: cart,
+        name: deliveryName,
+        email: currentUser.email,
+        instructions: deliveryInstructions,
+        lat: locations.latitude,
+        lng: locations.longitude,
+        date: moment().format("lll"),
+        total: total,
+      };
 
-    const placeOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(orderObject),
+      const placeOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderObject),
+      };
+      const deleteOptions = {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+      };
+      await fetch(`/api/place-order`, placeOptions);
+      await fetch(`/api/clear-the-cart/${currentUser.email}`, deleteOptions);
+      setTimeToUpdateCart(!timeToUpdateCart);
+      navigate("/");
     };
-    const deleteOptions = {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-    };
-    const placeOrder = await fetch(`/api/place-order`, placeOptions);
-    const deleteCart = await fetch(
-      `/api/clear-the-cart/${currentUser.email}`,
-      deleteOptions
-    );
-    setTimeToUpdateCart(!timeToUpdateCart);
-    navigate("/");
+    sendOrder();
   };
 
   return (
@@ -160,16 +168,7 @@ const Checkout = () => {
                         setTip(ev.target.value ? parseInt(ev.target.value) : 0)
                       }
                     />
-                    <span>
-                      $
-                      {(
-                        state.subTotal +
-                        state.subTotal * 0.15 +
-                        state.subTotal * 0.15 +
-                        state.subTotal * 0.1 +
-                        (state.subTotal * tip) / 100
-                      ).toFixed(2)}
-                    </span>
+                    <span>${total}</span>
                   </TotalContentSection>
                 </TotalDetailsContainer>
               ) : (
@@ -275,6 +274,7 @@ const ProductSection = styled.div`
 
 const Container = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   margin-bottom: 40px;
   gap: 20px;
@@ -300,10 +300,11 @@ const Tip = styled.input`
 const Wrapper = styled.div`
   display: flex;
   gap: 40px;
+  margin-bottom: 50px;
 `;
 
 const OrderSummary = styled.div`
-  width: 700px;
+  width: 100%;
   background: #ffffff;
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -314,7 +315,7 @@ const OrderSummary = styled.div`
 `;
 
 const DeliveryDetails = styled.div`
-  width: 600px;
+  width: 100%;
   height: 100%;
   background: #ffffff;
   border: 1px solid var(--border-color);

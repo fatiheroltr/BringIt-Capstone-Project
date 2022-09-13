@@ -140,7 +140,7 @@ const CategorySelector = styled.button`
     props.isCategoriesOpen
       ? "2px solid var(--teal-color)"
       : "2px solid var(--border-color)"};
-  padding: 0;
+  margin-right: 70px;
   padding-bottom: 7px;
   cursor: pointer;
 
@@ -183,13 +183,13 @@ const Select = styled.div`
   gap: 10px;
   position: absolute;
   top: 30px;
-  right: -18px;
+  right: 55px;
   transition: 0.15s ease-in-out;
-  z-index: 99;
+  z-index: 97;
   background-color: #fff;
   padding: 20px;
   padding-right: 35px;
-  opacity: ${(props) => (props.isCategoriesOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isCategoriesOpen ? "visible" : "hidden")};
   -webkit-box-shadow: -14px 16px 41px -12px rgba(0, 0, 0, 0.35);
   box-shadow: -14px 16px 41px -12px rgba(0, 0, 0, 0.35);
   border-radius: 10px;

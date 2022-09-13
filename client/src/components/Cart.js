@@ -23,7 +23,7 @@ const Cart = () => {
   } = useContext(CartContext);
 
   const { user, isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [subTotal, setSubTotal] = useState(0);
   const [updatingCart, setUpdatingCart] = useState(false);
@@ -95,6 +95,7 @@ const Cart = () => {
     }
     setSubTotal(newSubTotal);
   }, [cart]);
+
   return (
     <Wrapper>
       <Container

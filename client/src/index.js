@@ -7,6 +7,7 @@ import { RestaurantsProvider } from "./context/RestaurantsContext";
 import { UserProvider } from "./context/UserContext";
 import { CategoriesProvider } from "./context/CategoriesContext";
 import { ProductsProvider } from "./context/ProductsContext";
+import { MdViewModule } from "react-icons/md";
 
 // const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 // const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;

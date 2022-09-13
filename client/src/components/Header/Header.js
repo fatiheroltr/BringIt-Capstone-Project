@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: auto;
-  z-index: 9;
+  z-index: 98;
 `;
 
 export default Header;

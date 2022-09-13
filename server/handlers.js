@@ -3,6 +3,7 @@ const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 const { v4: uuidv4 } = require("uuid");
+const stream = require("stream");
 
 const getProducts = async (req, res) => {
   const client = new MongoClient(MONGO_URI);
@@ -338,25 +339,25 @@ const createUser = async (req, res) => {
     // : await db.collection("users").updateOne({ cart: user.cart });
     client.close();
 
-    result &&
-      res.status(200).json({
-        status: 200,
-        success: true,
-        data: result,
-        message: `New user created!`,
-      });
-    // : res.status(400).json({
-    //     status: 400,
-    //     data: user,
-    //     message: `User already registered`,
-    //   });
+    result
+      ? res.status(200).json({
+          status: 200,
+          success: true,
+          data: result,
+          message: `New user created!`,
+        })
+      : res.status(200).json({
+          status: 200,
+          success: false,
+          message: `User already registered`,
+        });
   } catch (err) {
     console.log("Error: ", err);
   }
 };
 
 const placeOrder = async (req, res) => {
-  const newOrder = { ...req.body, _id: uuidv4(), status: "open" };
+  const newOrder = { ...req.body, _id: uuidv4(), status: "Pending" };
   const client = new MongoClient(MONGO_URI);
   try {
     await client.connect();
@@ -382,7 +383,6 @@ const placeOrder = async (req, res) => {
 
 const clearTheCart = async (req, res) => {
   const currentUserEmail = req.params.email;
-  console.log("currentUser: ", req.params.email);
   const client = new MongoClient(MONGO_URI);
   try {
     await client.connect();
@@ -410,30 +410,67 @@ const clearTheCart = async (req, res) => {
 };
 
 const getOrdersByEmail = async (req, res) => {
-  const email = req.body;
+  const email = req.params.email;
   const client = new MongoClient(MONGO_URI);
+
   try {
     await client.connect();
     const db = client.db("CAPSTONE");
+
     const result = await db
       .collection("orders")
       .find({ email: email })
       .toArray();
     client.close();
 
-    result.length > 0
+    result
       ? res.status(200).json({
           status: 200,
           data: result,
           message: `Orders are loaded!`,
         })
-      : res.status(404).json({
-          status: 404,
-          message: `Couldn't find any order!`,
+      : res.status(400).json({
+          status: 400,
+          message: `There is no order`,
         });
   } catch (err) {
     console.log("Error: ", err);
   }
+};
+
+const reloadHandler = async (req, res) => {
+  const email = req.params.email;
+
+  // const pipeline = [
+  //   {
+  //     $match: { email: email },
+  //   },
+  // ];
+
+  const client = new MongoClient(MONGO_URI);
+  await client.connect();
+  const db = client.db("CAPSTONE");
+  const changeStream = await db.collection("orders").watch();
+
+  const closeChangeStream = (timeInMs, changeStream) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log("Closing the change stream");
+        changeStream.close();
+        resolve();
+      }, timeInMs);
+    });
+  };
+
+  changeStream.on("change", async (change) => {
+    console.log("CHANGE!!!!!!!!!!!!!!");
+    res.status(200).json({
+      status: 200,
+      reload: true,
+    });
+  });
+
+  await closeChangeStream(60000, changeStream);
 };
 
 module.exports = {
@@ -452,4 +489,5 @@ module.exports = {
   placeOrder,
   clearTheCart,
   getOrdersByEmail,
+  reloadHandler,
 };
