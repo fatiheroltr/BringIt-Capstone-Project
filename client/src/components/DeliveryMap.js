@@ -1,9 +1,11 @@
 /*global google*/
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   useJsApiLoader,
   GoogleMap,
   Marker,
   DirectionsRenderer,
+  InfoWindow,
 } from "@react-google-maps/api";
 import { useEffect, useState } from "react";
 
@@ -13,6 +15,7 @@ const TrackingMap = ({ setLocation }) => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
   const [position, setPosition] = useState();
+  const { user } = useAuth0();
 
   useEffect(() => {
     if (navigator && navigator.geolocation) {
@@ -30,8 +33,8 @@ const TrackingMap = ({ setLocation }) => {
   };
   console.log("currentLocation: ", currentLocation);
 
-  const onLoad = (marker) => {
-    // console.log("marker: ", marker);
+  const onLoad = (infoWindow) => {
+    console.log("infoWindow: ", infoWindow);
   };
 
   const mapContainerStyle = {
@@ -63,6 +66,11 @@ const TrackingMap = ({ setLocation }) => {
     streetViewControl: false,
   };
 
+  // const iconMarker = {
+  //   url: user.picture,
+  //   scaledSize: { width: 60, height: 60 },
+  // };
+
   return (
     isLoaded && (
       <GoogleMap
@@ -76,7 +84,25 @@ const TrackingMap = ({ setLocation }) => {
           position={currentLocation}
           onDragEnd={(e) => moveMarker(e)}
           draggable={true}
-        ></Marker>
+          // icon={iconMarker}
+        >
+          {currentLocation && (
+            <InfoWindow onLoad={onLoad} position={currentLocation}>
+              <div
+                style={{
+                  color: "var(--primary-color)",
+                  textAlign: "center",
+                }}
+              >
+                {/* <h1>You are here</h1> */}
+                <img
+                  src={user.picture}
+                  style={{ width: "70px", height: "70px", borderRadius: "50%" }}
+                ></img>
+              </div>
+            </InfoWindow>
+          )}
+        </Marker>
       </GoogleMap>
     )
   );

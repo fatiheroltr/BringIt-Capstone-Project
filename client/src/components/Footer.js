@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <Wrapper>
       <IdentityContainer>
-        <Logo />
+        <Logo imageSize={120} sloganSize={16} />
         <Socials>
           <SocialIcon src={extractImageUrl("face", "png")} />
           <SocialIcon src={extractImageUrl("twitter", "png")} />
@@ -58,6 +58,7 @@ const Wrapper = styled.div`
   padding: 15px 44px;
   ${mobile({ display: "none" })};
 `;
+
 const IdentityContainer = styled.div``;
 const Socials = styled.div`
   display: flex;

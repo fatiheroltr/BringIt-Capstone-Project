@@ -14,6 +14,7 @@ import CheckoutItemSkeleton from "../components/Skeletons/CheckoutItemSkeleton";
 import CheckoutTotalSkeleton from "../components/Skeletons/CheckoutTotalSkeleton";
 import { FiAlertCircle } from "react-icons/fi";
 import moment from "moment";
+import LoadingCircle from "../components/LoadingCircle";
 
 const Checkout = () => {
   const { cart, isCartLoaded, setTimeToUpdateCart, timeToUpdateCart } =
@@ -25,23 +26,28 @@ const Checkout = () => {
   const [deliveryName, setDeliveryName] = useState();
   const [deliveryInstructions, setDeliveryInstructions] = useState();
   const [locations, setLocation] = useState();
-  const [total, setTotal] = useState(
-    (
-      state.subTotal +
-      state.subTotal * 0.15 +
-      state.subTotal * 0.15 +
-      state.subTotal * 0.1 +
-      (state.subTotal * tip) / 100
-    ).toFixed(2)
-  );
-
+  const [total, setTotal] = useState();
+  const [placing, setPlacing] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTotal(
+      (
+        state.subTotal +
+        state.subTotal * 0.15 +
+        state.subTotal * 0.15 +
+        state.subTotal * 0.1 +
+        (state.subTotal * tip) / 100
+      ).toFixed(2)
+    );
+  }, [tip]);
 
   useEffect(() => {
     isAuthenticated && setUser(user);
   }, [isAuthenticated]);
 
   const handlePlaceOrder = () => {
+    setPlacing(true);
     const sendOrder = async () => {
       const orderObject = {
         cart: cart,
@@ -65,6 +71,7 @@ const Checkout = () => {
       };
       await fetch(`/api/place-order`, placeOptions);
       await fetch(`/api/clear-the-cart/${currentUser.email}`, deleteOptions);
+      setPlacing(false);
       setTimeToUpdateCart(!timeToUpdateCart);
       navigate("/");
     };
@@ -195,9 +202,15 @@ const Checkout = () => {
               />
               <PlaceOrderButton
                 onClick={handlePlaceOrder}
-                disabled={!deliveryInstructions && !deliveryName && true}
+                disabled={
+                  (!deliveryInstructions && !deliveryName) || (placing && true)
+                }
               >
-                PLACE YOUR ORDER
+                {!placing ? (
+                  "PLACE YOUR ORDER"
+                ) : (
+                  <LoadingCircle circleSize={40} />
+                )}
               </PlaceOrderButton>
             </DeliveryDetails>
           </Container>

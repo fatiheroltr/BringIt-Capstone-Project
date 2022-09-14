@@ -55,7 +55,7 @@ const Dashboard = () => {
     fetchOrders();
     const interval = setInterval(() => {
       fetchOrders();
-    }, 6000);
+    }, 10000);
     return () => clearInterval(interval);
   }, []);
 

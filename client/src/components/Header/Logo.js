@@ -2,13 +2,16 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { extractImageUrl, mobile } from "../../utils";
 
-const Logo = () => {
+const Logo = ({ imageSize, sloganSize }) => {
   return (
     <Wrapper>
       <Link to="/">
-        <LogoImage src={extractImageUrl("bringit-logo", "png")}></LogoImage>
+        <LogoImage
+          src={extractImageUrl("bringit-logo", "png")}
+          imageSize={imageSize}
+        ></LogoImage>
       </Link>
-      <Slogan>delivery in campus</Slogan>
+      <Slogan sloganSize={sloganSize}>delivery in campus</Slogan>
     </Wrapper>
   );
 };
@@ -20,12 +23,14 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 const LogoImage = styled.img`
-  width: 153px;
+  /* width: 153px; */
+  width: ${(props) => props.imageSize + "px"};
   align-self: center;
 `;
 const Slogan = styled.span`
   color: var(--primary-color);
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: ${(props) => props.sloganSize + "px"};
   letter-spacing: -0.04em;
   margin-top: 10px;
   margin-left: 12px;

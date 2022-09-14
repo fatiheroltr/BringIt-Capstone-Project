@@ -6,7 +6,7 @@ import { mobile } from "../../utils";
 const Header = ({ navigation }) => {
   return (
     <Wrapper>
-      <Logo />
+      <Logo imageSize={153} sloganSize={20} />
       {navigation && <Navigation />}
     </Wrapper>
   );

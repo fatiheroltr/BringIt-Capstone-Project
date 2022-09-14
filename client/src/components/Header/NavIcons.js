@@ -108,7 +108,7 @@ const ProfileMenu = styled.div`
   position: absolute;
   right: -15px;
   top: 45px;
-  opacity: ${(props) => (props.isProfileMenuOpen ? "1" : "0")};
+  visibility: ${(props) => (props.isProfileMenuOpen ? "visible" : "hidden")};
   background-color: #fff;
   border: 1px solid var(--border-color);
   padding: 20px;
