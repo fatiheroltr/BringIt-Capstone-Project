@@ -57,6 +57,8 @@ const Checkout = () => {
         lat: locations.latitude,
         lng: locations.longitude,
         date: moment().format("lll"),
+        fee: state.subTotal * 0.1,
+        tip: (state.subTotal * tip) / 100,
         total: total,
       };
 
@@ -73,7 +75,8 @@ const Checkout = () => {
       await fetch(`/api/clear-the-cart/${currentUser.email}`, deleteOptions);
       setPlacing(false);
       setTimeToUpdateCart(!timeToUpdateCart);
-      navigate("/");
+      navigate("/dashboard");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     };
     sendOrder();
   };

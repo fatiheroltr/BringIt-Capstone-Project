@@ -21,8 +21,13 @@ const {
   placeOrder,
   clearTheCart,
   getOrdersByEmail,
-  reloadHandler,
+  getOrders,
+  checkDeliverers,
+  updateOrderStatus,
+  // reloadHandler,
 } = require("./handlers");
+
+// reloadHandler();
 
 express()
   .use(function (req, res, next) {
@@ -52,12 +57,16 @@ express()
   .get("/api/get-products-by-store/:id", getProductsByStore)
   .get("/api/get-cart/:email", getCart)
   .get("/api/get-orders-by-email/:email", getOrdersByEmail)
-  .get("/api/reload/:email", reloadHandler)
+  .get("/api/get-orders", getOrders)
+  .get("/api/check-deliverers/:email", checkDeliverers)
+
+  // .get("/api/reload", reloadHandler)
 
   .patch("/api/add-to-cart", addToCart)
   .patch("/api/update-quantity-in-cart", updateQuantityInCart)
   .patch("/api/delete-item-from-cart", deleteItemFromCart)
   .patch("/api/clear-the-cart/:email", clearTheCart)
+  .patch("/api/update-order-status", updateOrderStatus)
 
   .put("/api/create-user", createUser)
   .put("/api/place-order", placeOrder)

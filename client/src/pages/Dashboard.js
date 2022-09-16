@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import styled, { keyframes } from "styled-components";
 import Content from "../components/Content";
@@ -10,15 +10,18 @@ import { GoSettings } from "react-icons/go";
 import { v4 as uuidv4 } from "uuid";
 import DashboardOrderCard from "../components/Dashboard/DashboardOrderCard";
 import DashboardOrderCardSkeleton from "../components/Skeletons/DashboardOrderCardSkeleton";
+import { UserContext } from "../context/UserContext";
+import { TbPaperBag } from "react-icons/tb";
 
 const Dashboard = () => {
   const { user, logout } = useAuth0();
+  const { currentUser, setUser, isUserDeliverer } = useContext(UserContext);
   const [orders, setOrders] = useState();
   const [isOrdersLoaded, setIsOrdersLoaded] = useState(false);
+  const [jobs, setJobs] = useState();
+  const [isJobsLoaded, setIsJobsLoaded] = useState(false);
   const [activeMenu, setActiveMenu] = useState("orders");
   const [location, setLocation] = useState();
-  // const [reload, setReload] = useState(false);
-
   const [showDialog, setShowDialog] = useState(false);
   const open = () => setShowDialog(true);
   const close = () => setShowDialog(false);
@@ -30,46 +33,39 @@ const Dashboard = () => {
     setActiveMenu(id);
   };
 
-  // const reFetchForUpdates = async () => {
-  //   try {
-  //     const response = await fetch(`/api/reload/${user.email}`);
-  //     const result = await response.json();
-  //     // console.log("result: ", result.reload);
-  //     setReload(result ? true : false);
-  //   } catch (err) {
-  //     console.log("Error", err);
-  //   }
-  // };
+  const fetchJobs = async () => {
+    try {
+      const response = await fetch(`/api/get-orders`);
+      const result = await response.json();
+      setJobs(result.data);
+      setIsJobsLoaded(true);
+    } catch (err) {
+      console.log("Error", err);
+    }
+  };
+
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch(
+        `/api/get-orders-by-email/${currentUser.email}`
+      );
+      const result = await response.json();
+      setOrders(result.data);
+      setIsOrdersLoaded(true);
+    } catch (err) {
+      console.log("Error", err);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch(`/api/get-orders-by-email/${user.email}`);
-        const result = await response.json();
-        setOrders(result.data);
-        setIsOrdersLoaded(true);
-      } catch (err) {
-        console.log("Error", err);
-      }
-    };
-    fetchOrders();
+    currentUser && fetchOrders();
+    fetchJobs();
     const interval = setInterval(() => {
       fetchOrders();
+      fetchJobs();
     }, 10000);
     return () => clearInterval(interval);
-  }, []);
-
-  // useEffect(() => {
-  //   reFetchForUpdates();
-  // }, []);
-
-  // useEffect(() => {
-  //   fetchOrders();
-  //   // const interval = setInterval(() => {
-  //   //   fetchOrders();
-  //   // }, 6000);
-  //   // return () => clearInterval(interval);
-  // }, [reload, setReload]);
+  }, [currentUser]);
 
   return (
     <Section key={uuidv4()}>
@@ -77,7 +73,10 @@ const Dashboard = () => {
       <Content marginTop={true}>
         <Wrapper>
           <ProfileContainer>
-            <ProfilePic src={user.picture} referrerPolicy="no-referrer" />
+            <ProfilePic
+              src={currentUser && currentUser.picture}
+              referrerPolicy="no-referrer"
+            />
             <ProfileMenuContainer>
               <ProfileRow
                 id="profile"
@@ -89,13 +88,25 @@ const Dashboard = () => {
                 </Icon>
                 Profile
               </ProfileRow>
+              {isUserDeliverer && (
+                <ProfileRow
+                  id="delivery"
+                  onClick={(ev) => handleClick(ev.target.id)}
+                  activeMenu={activeMenu}
+                >
+                  <Icon>
+                    <TbClipboardList />
+                  </Icon>
+                  Deliveries
+                </ProfileRow>
+              )}
               <ProfileRow
                 id="orders"
                 onClick={(ev) => handleClick(ev.target.id)}
                 activeMenu={activeMenu}
               >
                 <Icon>
-                  <TbClipboardList />
+                  <TbPaperBag />
                 </Icon>
                 Orders
               </ProfileRow>
@@ -126,7 +137,13 @@ const Dashboard = () => {
               orders &&
               orders.length > 0 &&
               orders.map((order) => {
-                return <DashboardOrderCard key={order._id} order={order} />;
+                return (
+                  <DashboardOrderCard
+                    key={order._id}
+                    order={order}
+                    delivery={false}
+                  />
+                );
               })}
             {activeMenu === "orders" && !isOrdersLoaded && (
               <DashboardOrderCardSkeleton />
@@ -134,6 +151,20 @@ const Dashboard = () => {
             {activeMenu === "orders" && isOrdersLoaded && orders.length < 1 && (
               <EmptyField>No order? Aren't you hungry?</EmptyField>
             )}
+
+            {activeMenu === "delivery" &&
+              jobs &&
+              jobs.length > 0 &&
+              jobs.map((job) => {
+                return (
+                  <DashboardOrderCard
+                    key={job._id}
+                    order={job}
+                    delivery={true}
+                  />
+                );
+              })}
+
             {activeMenu === "profile" && (
               <EmptyField>
                 Profile details will be here in three years

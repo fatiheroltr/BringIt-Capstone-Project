@@ -3,7 +3,6 @@ const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 const { v4: uuidv4 } = require("uuid");
-const stream = require("stream");
 
 const getProducts = async (req, res) => {
   const client = new MongoClient(MONGO_URI);
@@ -438,40 +437,124 @@ const getOrdersByEmail = async (req, res) => {
   }
 };
 
-const reloadHandler = async (req, res) => {
-  const email = req.params.email;
-
-  // const pipeline = [
-  //   {
-  //     $match: { email: email },
-  //   },
-  // ];
-
+const getOrders = async (req, res) => {
   const client = new MongoClient(MONGO_URI);
-  await client.connect();
-  const db = client.db("CAPSTONE");
-  const changeStream = await db.collection("orders").watch();
 
-  const closeChangeStream = (timeInMs, changeStream) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log("Closing the change stream");
-        changeStream.close();
-        resolve();
-      }, timeInMs);
-    });
-  };
+  try {
+    await client.connect();
+    const db = client.db("CAPSTONE");
 
-  changeStream.on("change", async (change) => {
-    console.log("CHANGE!!!!!!!!!!!!!!");
-    res.status(200).json({
-      status: 200,
-      reload: true,
-    });
-  });
+    const result = await db.collection("orders").find().toArray();
+    client.close();
 
-  await closeChangeStream(60000, changeStream);
+    result.length > 0
+      ? res.status(200).json({
+          status: 200,
+          data: result,
+          message: `All orders are loaded!`,
+        })
+      : res.status(400).json({
+          status: 400,
+          message: `There is no order`,
+        });
+  } catch (err) {
+    console.log("Error: ", err);
+  }
 };
+
+const checkDeliverers = async (req, res) => {
+  const email = req.params.email;
+  const client = new MongoClient(MONGO_URI);
+
+  try {
+    await client.connect();
+    const db = client.db("CAPSTONE");
+
+    const result = await db.collection("deliverers").findOne({ email: email });
+    client.close();
+
+    result
+      ? res.status(200).json({
+          status: 200,
+          success: true,
+          data: result,
+          message: `Person is a deliverer!`,
+        })
+      : res.status(400).json({
+          status: 400,
+          message: `Person is not a deliverer!`,
+        });
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
+
+const updateOrderStatus = async (req, res) => {
+  const { orderId, userEmail, status } = req.body;
+  const client = new MongoClient(MONGO_URI);
+  try {
+    await client.connect();
+    const db = client.db("CAPSTONE");
+    const result = await db
+      .collection("orders")
+      .updateOne(
+        { email: userEmail, _id: orderId },
+        { $set: { status: status } }
+      );
+    client.close();
+
+    result.modifiedCount > 0
+      ? res.status(200).json({
+          status: 200,
+          success: true,
+          data: result,
+          message: `Item's status updated!`,
+        })
+      : res.status(404).json({
+          status: 404,
+          message: `Couldn't find the item in cart!`,
+        });
+  } catch (err) {
+    console.log("Error: ", err);
+  }
+};
+
+// const reloadHandler = async (req, res) => {
+//   // const email = req.params.email;
+//   const client = new MongoClient(MONGO_URI);
+//   await client.connect();
+//   const db = client.db("CAPSTONE");
+
+//   const ordersChangeStream = await db.collection("orders").watch();
+
+//   // ordersChangeStream.on("change", (change) => {
+//   //   // console.log("NEW ORDER!!!");
+//   //   // console.log(new Date(), change.fullDocument);
+
+//   //   io.of("/api/socket").emit("change", change);
+//   // });
+
+//   const closeChangeStream = (timeInMs, changeStream) => {
+//     return new Promise((resolve) => {
+//       setTimeout(() => {
+//         console.log("Closing the change stream");
+//         changeStream.close();
+//         resolve();
+//       }, timeInMs);
+//     });
+//   };
+
+//   ordersChangeStream.on("change", (change) => {
+//     console.log("CHANGE!!!!!!!!!!!!!!");
+//     res.status(200).json({
+//       status: 200,
+//       reload: true,
+//     });
+//   });
+//   // ordersChangeStream.close();
+
+//   // await closeChangeStream(10000, ordersChangeStream);
+// };
 
 module.exports = {
   getProducts,
@@ -489,5 +572,8 @@ module.exports = {
   placeOrder,
   clearTheCart,
   getOrdersByEmail,
-  reloadHandler,
+  getOrders,
+  checkDeliverers,
+  updateOrderStatus,
+  // reloadHandler,
 };

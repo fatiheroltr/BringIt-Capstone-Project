@@ -5,33 +5,92 @@ import TrackingMap from "../TrackingMap";
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import "@reach/dialog/styles.css";
 import { GoScreenFull } from "react-icons/go";
+import LoadingCircle from "../LoadingCircle";
 
-const DashboardOrderCard = ({ order }) => {
+const DashboardOrderCard = ({ order, delivery }) => {
   const [showDialog, setShowDialog] = useState(false);
+  const [jobAccepted, setJobAccepted] = useState(
+    order.status !== "Pending" && true
+  );
+  const [jobAccepting, setJobAccepting] = useState(false);
   const open = () => setShowDialog(true);
   const close = () => setShowDialog(false);
+
+  const handleStatusUpdate = (order) => {
+    setJobAccepting(true);
+    const statusUpdate = async () => {
+      const updateObject = {
+        orderId: order._id,
+        userEmail: order.email,
+        status: "On the way",
+      };
+
+      const options = {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateObject),
+      };
+      try {
+        const response = await fetch(`/api/update-order-status`, options);
+        const result = await response.json();
+      } catch (err) {
+        console.log("Error", err);
+      }
+    };
+    statusUpdate();
+  };
 
   return (
     <OrderContainer key={uuidv4()}>
       <OrderRow>
-        <InnerRowGroup style={{ display: "flex", gap: "30px" }}>
+        <InnerRowGroup
+          style={{ display: "flex", gap: "30px", alignItems: "center" }}
+        >
           <span>
             <BoldText>Order # </BoldText>
             <span>{order._id.slice(0, 12)}</span>
           </span>
-          <span>
+          <span style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             Status:{" "}
-            <StatusColor orderStatus={order.status}>{order.status}</StatusColor>
+            {!delivery ? (
+              <StatusColor orderStatus={order.status}>
+                {order.status}
+              </StatusColor>
+            ) : (
+              <AcceptButton
+                onClick={() => handleStatusUpdate(order)}
+                disabled={(jobAccepted || jobAccepting) && true}
+              >
+                {jobAccepting ? (
+                  <LoadingCircle circleSize={30} />
+                ) : !jobAccepted ? (
+                  "Accept the job"
+                ) : (
+                  "Accepted"
+                )}
+              </AcceptButton>
+            )}
           </span>
         </InnerRowGroup>
         <InnerRowGroup
           style={{
             display: "flex",
             gap: "30px",
+            justifyContent: "flex-end",
+            alignItems: "center",
           }}
         >
           <span>
-            <BoldText>Total:</BoldText> ${order.total}
+            {!delivery ? (
+              <>
+                <BoldText>Total:</BoldText> ${order.total}
+              </>
+            ) : (
+              <>
+                <BoldText>Earning:</BoldText> $
+                {(order.fee + order.tip).toFixed(2)}
+              </>
+            )}
           </span>
           <span>
             <BoldText>Date:</BoldText> {order.date}
@@ -123,8 +182,9 @@ const DashboardOrderCard = ({ order }) => {
         <RowGroup>
           <InnerRowGroup>
             <MapOverlay
-              onClick={() => order.status !== "Pending" && open()}
+              onClick={() => (order.status !== "Pending" || delivery) && open()}
               status={order.status}
+              delivery={delivery}
             >
               <Overlay>
                 <GoScreenFull />
@@ -156,7 +216,6 @@ const DashboardOrderCard = ({ order }) => {
                       destinationLongitude={order.lng}
                     />
                   </MapContainer>
-                  {/* <button onClick={close}>Very nice.</button> */}
                 </StyledDialogContent>
               </DialogOverlay>
             </MapOverlay>
@@ -166,6 +225,31 @@ const DashboardOrderCard = ({ order }) => {
     </OrderContainer>
   );
 };
+
+const AcceptButton = styled.button`
+  font-size: 14px;
+  color: #fff;
+  font-weight: 700;
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  border: 2px solid var(--primary-color);
+  padding: 7px;
+  width: 120px;
+  height: 34px;
+
+  cursor: pointer;
+  align-self: center;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:hover:enabled {
+    background-color: #fff;
+    color: var(--primary-color);
+  }
+`;
 
 const DialogCloseButton = styled.button`
   position: absolute;
@@ -225,12 +309,17 @@ const MapOverlay = styled.div`
   cursor: ${(props) =>
     props.status === "Pending" ? "not-allowed" : "pointer"};
   filter: ${(props) =>
-    props.status === "Pending" ? "grayscale(100%)" : "grayscale(0%)"};
-  opacity: ${(props) => (props.status === "Pending" ? ".5" : "1")};
+    props.status === "Pending" && !props.delivery
+      ? "grayscale(100%)"
+      : "grayscale(0%)"};
+  opacity: ${(props) =>
+    props.status === "Pending" && !props.delivery ? ".5" : "1"};
 
   &:hover {
     cursor: ${(props) =>
-      props.status === "Pending" ? "not-allowed" : "pointer"};
+      props.status === "Pending" && !props.delivery
+        ? "not-allowed"
+        : "pointer"};
     ${Overlay} {
       opacity: ${(props) => (props.status === "Pending" ? "0" : "1")};
     }
@@ -308,6 +397,7 @@ const OrderRow = styled.div`
   font-style: 20px;
   display: flex;
   justify-content: space-between;
+
   gap: 30px;
 
   ${RowGroup}:last-child {

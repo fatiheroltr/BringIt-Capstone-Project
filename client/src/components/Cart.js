@@ -286,7 +286,7 @@ const Cart = () => {
 
 const EmptyCartImage = styled.img`
   width: 175px;
-  margin-top: -140px;
+  margin-top: -40px;
   filter: grayscale(100%);
 `;
 

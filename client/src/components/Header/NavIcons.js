@@ -16,16 +16,9 @@ const NavIcons = () => {
     useAuth0();
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
-  // const [registeredUserEmail, setRegisteredUserEmail] = useState(false);
-
-  // useEffect(() => {
-  //   if (user && registeredUserEmail !== user.email) {
-  //     setUser(user);
-  //   }
-  // }, [user, isAuthenticated]);
 
   useEffect(() => {
-    isAuthenticated && setUser(user);
+    user && setUser(user);
   }, [user]);
 
   let cartQuantity = 0;

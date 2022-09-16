@@ -31,10 +31,10 @@ const TrackingMap = ({ setLocation }) => {
     lat: position.latitude,
     lng: position.longitude,
   };
-  console.log("currentLocation: ", currentLocation);
+  // console.log("currentLocation: ", currentLocation);
 
   const onLoad = (infoWindow) => {
-    console.log("infoWindow: ", infoWindow);
+    // console.log("infoWindow: ", infoWindow);
   };
 
   const mapContainerStyle = {
