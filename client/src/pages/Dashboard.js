@@ -12,6 +12,10 @@ import DashboardOrderCard from "../components/Dashboard/DashboardOrderCard";
 import DashboardOrderCardSkeleton from "../components/Skeletons/DashboardOrderCardSkeleton";
 import { UserContext } from "../context/UserContext";
 import { TbPaperBag } from "react-icons/tb";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { mobile } from "../utils";
+import MobileDashboardOrderCard from "../components/Dashboard/MobileDashboardOrderCard";
+import MobileDashboardOrderCardSkeleton from "../components/Skeletons/MobileDashboardOrderCardSkeleton";
 
 const Dashboard = () => {
   const { user, logout } = useAuth0();
@@ -23,6 +27,7 @@ const Dashboard = () => {
   const [activeMenu, setActiveMenu] = useState("orders");
   const [location, setLocation] = useState();
   const [showDialog, setShowDialog] = useState(false);
+  const [isMenuOpen, setIsOpenMenu] = useState(false);
   const open = () => setShowDialog(true);
   const close = () => setShowDialog(false);
 
@@ -71,7 +76,7 @@ const Dashboard = () => {
     <Section key={uuidv4()}>
       <Header navigation={true} />
       <Content marginTop={true}>
-        <Wrapper>
+        <DesktopWrapper>
           <ProfileContainer>
             <ProfilePic
               src={currentUser && currentUser.picture}
@@ -160,7 +165,7 @@ const Dashboard = () => {
                   <DashboardOrderCard
                     key={job._id}
                     order={job}
-                    delivery={true}
+                    delivery={isUserDeliverer}
                   />
                 );
               })}
@@ -174,12 +179,169 @@ const Dashboard = () => {
               <EmptyField>Settings will be here. I mean maybe</EmptyField>
             )}
           </ContentContainer>
-        </Wrapper>
+        </DesktopWrapper>
+        <MobileWrapper>
+          <ProfileMobileHeader>
+            <div>
+              <ProfilePic
+                src={currentUser && currentUser.picture}
+                referrerPolicy="no-referrer"
+              />
+              <ActiveMenuTitle>{activeMenu}</ActiveMenuTitle>
+            </div>
+            <MenuButton onClick={() => setIsOpenMenu(!isMenuOpen)}>
+              <GiHamburgerMenu />
+            </MenuButton>
+          </ProfileMobileHeader>
+          {isMenuOpen && (
+            <ProfileMenuContainer>
+              <ProfileRow
+                id="profile"
+                onClick={(ev) => {
+                  handleClick(ev.target.id);
+                  setIsOpenMenu(false);
+                }}
+                activeMenu={activeMenu}
+              >
+                <Icon>
+                  <BiUser />
+                </Icon>
+                Profile
+              </ProfileRow>
+              {isUserDeliverer && (
+                <ProfileRow
+                  id="deliveries"
+                  onClick={(ev) => {
+                    handleClick(ev.target.id);
+                    setIsOpenMenu(false);
+                  }}
+                  activeMenu={activeMenu}
+                >
+                  <Icon>
+                    <TbClipboardList />
+                  </Icon>
+                  Deliveries
+                </ProfileRow>
+              )}
+              <ProfileRow
+                id="orders"
+                onClick={(ev) => {
+                  handleClick(ev.target.id);
+                  setIsOpenMenu(false);
+                }}
+                activeMenu={activeMenu}
+              >
+                <Icon>
+                  <TbPaperBag />
+                </Icon>
+                Orders
+              </ProfileRow>
+              <ProfileRow
+                id="settings"
+                onClick={(ev) => {
+                  handleClick(ev.target.id);
+                  setIsOpenMenu(false);
+                }}
+                activeMenu={activeMenu}
+              >
+                <Icon>
+                  <GoSettings />
+                </Icon>
+                Settings
+              </ProfileRow>
+              <ProfileRow
+                id="logout"
+                onClick={(ev) => {
+                  handleClick(ev.target.id);
+                  setIsOpenMenu(false);
+                }}
+                activeMenu={activeMenu}
+              >
+                <Icon>
+                  <BiLogOut />
+                </Icon>
+                Log out
+              </ProfileRow>
+            </ProfileMenuContainer>
+          )}
+          <ContentContainer>
+            {activeMenu === "orders" &&
+              orders &&
+              orders.length > 0 &&
+              orders.map((order) => {
+                return (
+                  <MobileDashboardOrderCard
+                    key={order._id}
+                    order={order}
+                    delivery={false}
+                  />
+                );
+              })}
+            {activeMenu === "orders" && !isOrdersLoaded && (
+              <MobileDashboardOrderCardSkeleton />
+            )}
+            {activeMenu === "orders" && isOrdersLoaded && orders.length < 1 && (
+              <EmptyField>No order? Aren't you hungry?</EmptyField>
+            )}
+
+            {activeMenu === "deliveries" &&
+              jobs &&
+              jobs.length > 0 &&
+              jobs.map((job) => {
+                return (
+                  <MobileDashboardOrderCard
+                    key={job._id}
+                    order={job}
+                    delivery={isUserDeliverer}
+                  />
+                );
+              })}
+
+            {activeMenu === "profile" && (
+              <EmptyField>
+                Profile details will be here in three years
+              </EmptyField>
+            )}
+            {activeMenu === "settings" && (
+              <EmptyField>Settings will be here. I mean maybe</EmptyField>
+            )}
+          </ContentContainer>
+        </MobileWrapper>
       </Content>
       <Footer />
     </Section>
   );
 };
+
+const MenuButton = styled.button`
+  font-size: 22px;
+  font-weight: 700;
+  background: none;
+  border: none;
+`;
+
+const ActiveMenuTitle = styled.span`
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 22px;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+`;
+
+const ProfileMobileHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  & div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+`;
 
 const EmptyField = styled.div`
   display: flex;
@@ -190,6 +352,7 @@ const EmptyField = styled.div`
   font-size: 22px;
   font-weight: 700;
   color: var(--primary-color);
+  ${mobile({ textAlign: "center", height: "calc(100vh - 300px)" })};
 `;
 
 const Icon = styled.span`
@@ -199,8 +362,22 @@ const Icon = styled.span`
 const ProfileMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   margin-top: 15px;
+
+  ${mobile({
+    margin: "10px 0",
+    width: "156px",
+    padding: "10px 0",
+    border: "1px solid var(--border-color)",
+    borderRadius: "10px",
+    backgroundColor: "var(--light-color)",
+    position: "absolute",
+    right: "20px",
+    top: "40px",
+    boxShadow: "-14px 16px 41px -12px rgba(0, 0, 0, 0.35)",
+    zIndex: "1",
+  })};
 `;
 
 const ProfileRow = styled.button`
@@ -221,11 +398,19 @@ const ProfileRow = styled.button`
   padding-left: ${(props) => props.activeMenu === props.id && "15px"};
   border-radius: ${(props) =>
     props.activeMenu === props.id && "40px 0px 0px 40px"};
+
+  ${mobile({
+    fontSize: "18px",
+    padding: "2px 0 0 20px",
+    margin: "0",
+    borderRadius: "0",
+  })};
 `;
 
 const ProfilePic = styled.img`
   width: 100px;
   height: 100px;
+  ${mobile({ width: "54px", height: "54px", margin: "0" })};
   border-radius: 50%;
   margin-top: -90px;
   margin-left: auto;
@@ -234,6 +419,11 @@ const ProfilePic = styled.img`
 
 const ProfileContainer = styled.div`
   width: 250px;
+  ${mobile({
+    width: "156px",
+    padding: "0",
+    border: "1px solid var(--border-color)",
+  })};
   background-color: var(--light-color);
   border-radius: 10px;
   display: flex;
@@ -244,6 +434,7 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: calc(100% - 250px);
+  ${mobile({ width: "100%", gap: "0" })};
   gap: 25px;
 `;
 
@@ -253,13 +444,21 @@ const Section = styled.div`
   align-items: center;
 `;
 
-const Wrapper = styled.div`
+const DesktopWrapper = styled.div`
   display: flex;
   margin: 70px 0;
   justify-content: space-between;
   max-width: 1440px;
   width: 100%;
   gap: 30px;
+  ${mobile({ display: "none" })};
+`;
+
+const MobileWrapper = styled.div`
+  width: 100vw;
+  padding: 0 30px;
+  display: none;
+  ${mobile({ display: "block" })};
 `;
 
 export default withAuthenticationRequired(Dashboard, {

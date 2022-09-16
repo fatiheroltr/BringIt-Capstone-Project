@@ -480,8 +480,9 @@ const checkDeliverers = async (req, res) => {
           data: result,
           message: `Person is a deliverer!`,
         })
-      : res.status(400).json({
-          status: 400,
+      : res.status(200).json({
+          status: 200,
+          success: false,
           message: `Person is not a deliverer!`,
         });
   } catch (err) {

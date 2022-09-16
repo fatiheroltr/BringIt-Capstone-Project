@@ -7,7 +7,7 @@ import Header from "../components/Header/Header";
 import { CartContext } from "../context/CartContext";
 import { UserContext } from "../context/UserContext";
 import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
-import { extractImageUrl } from "../utils";
+import { extractImageUrl, mobile } from "../utils";
 import { v4 as uuidv4 } from "uuid";
 import { useLocation, useNavigate } from "react-router-dom";
 import CheckoutItemSkeleton from "../components/Skeletons/CheckoutItemSkeleton";
@@ -294,6 +294,7 @@ const Container = styled.div`
   flex-direction: column;
   margin-bottom: 40px;
   gap: 20px;
+  ${mobile({ marginBottom: "10px" })};
 `;
 
 const Tip = styled.input`
@@ -314,9 +315,12 @@ const Tip = styled.input`
 `;
 
 const Wrapper = styled.div`
+  width: 100%;
   display: flex;
+  ${mobile({ flexDirection: "column" })};
   gap: 40px;
   margin-bottom: 50px;
+  padding: 0 20px;
 `;
 
 const OrderSummary = styled.div`
@@ -354,6 +358,7 @@ const ProductContainer = styled.div`
   gap: 20px;
 `;
 const Image = styled.img`
+  ${mobile({ display: "none" })};
   width: 100px;
   flex: 1;
   align-self: flex-start;

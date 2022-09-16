@@ -201,12 +201,7 @@ const DashboardOrderCard = ({ order, delivery }) => {
                 isOpen={showDialog}
                 onDismiss={close}
               >
-                <StyledDialogContent
-                  aria-label={order.name}
-                  // style={{
-                  //   boxShadow: "0px 10px 50px hsla(0, 0%, 0%, 0.33)",
-                  // }}
-                >
+                <StyledDialogContent aria-label={order.name}>
                   <DialogCloseButton className="close-button" onClick={close}>
                     X
                   </DialogCloseButton>

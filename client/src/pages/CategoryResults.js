@@ -10,6 +10,8 @@ import Content from "../components/Content";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { ProductsContext } from "../context/ProductsContext";
 import { CategoriesContext } from "../context/CategoriesContext";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { MdRestaurantMenu } from "react-icons/md";
 import {
   RiCheckboxCircleFill,
   RiArrowDownSFill,
@@ -61,8 +63,13 @@ const CategoryResults = () => {
           onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
           categoriesOpen={isCategoriesOpen}
         >
-          <span>All Categories</span>
-          {isCategoriesOpen ? <RiArrowDownSFill /> : <RiArrowLeftSFill />}
+          <Desktop>
+            <span>All Categories</span>
+            {isCategoriesOpen ? <RiArrowDownSFill /> : <RiArrowLeftSFill />}
+          </Desktop>
+          <Mobile>
+            {!isCategoriesOpen ? <GiHamburgerMenu /> : <MdRestaurantMenu />}
+          </Mobile>
         </CategorySelector>
         <Select isCategoriesOpen={isCategoriesOpen}>
           {isCategoriesLoaded &&
@@ -88,7 +95,10 @@ const CategoryResults = () => {
           selectedCategories &&
           selectedCategories.map((category, index) => {
             return (
-              <div key={index}>
+              <div
+                key={index}
+                style={{ display: "flex", flexDirection: "column" }}
+              >
                 <CategoryName>{category}</CategoryName>
                 {products && isRestaurantsLoaded ? (
                   <ProductsWrapper>
@@ -125,6 +135,19 @@ const CategoryResults = () => {
   );
 };
 
+const Desktop = styled.div`
+  display: block;
+  ${mobile({
+    display: "none",
+  })};
+`;
+const Mobile = styled.div`
+  display: none;
+  ${mobile({
+    display: "block",
+  })};
+`;
+
 const CategorySelector = styled.button`
   display: flex;
   align-items: center;
@@ -133,6 +156,7 @@ const CategorySelector = styled.button`
   font-weight: 700;
   font-size: 16px;
   position: absolute;
+  top: 0;
   right: 0;
   background-color: #fff;
   border: none;

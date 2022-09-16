@@ -17,7 +17,12 @@ const Wrapper = styled.div`
   min-height: calc(100vh - 377px);
   width: 100%;
   padding: 0 65px;
+  ${mobile({ padding: "0px", justifyContent: "flex-start" })};
   max-width: 1440px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 export default Content;
