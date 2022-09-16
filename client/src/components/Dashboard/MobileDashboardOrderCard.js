@@ -7,7 +7,6 @@ import { DialogOverlay, DialogContent } from "@reach/dialog";
 import LoadingCircle from "../LoadingCircle";
 
 const MobileDashboardOrderCard = ({ order, delivery }) => {
-  console.log("delivery: ", delivery);
   const [showDialog, setShowDialog] = useState(false);
   const [jobAccepted, setJobAccepted] = useState(
     order.status !== "Pending" && true

@@ -16,8 +16,6 @@ const TrackingMap = ({ destinationLatitude, destinationLongitude }) => {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
-  // distance && console.log("distance: ", distance);
-  // duration && console.log("duration: ", duration);
 
   const calculateRoute = async () => {
     const directionsService = new window.google.maps.DirectionsService();
@@ -45,9 +43,6 @@ const TrackingMap = ({ destinationLatitude, destinationLongitude }) => {
           draggable: false,
         }}
         onLoad={calculateRoute}
-        // onClick={() => {
-        //   console.log("CLICKED");
-        // }}
       >
         <Marker />
         {directionsResponse && (

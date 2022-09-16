@@ -7,7 +7,7 @@ export const mobile = (props) => {
     }
   `;
 };
-// ${mobile({ width: "50px" })};
+// for example: ${mobile({ width: "50px" })};
 
 export const extractImageUrl = (imageId, format, type) => {
   /**
@@ -17,12 +17,12 @@ export const extractImageUrl = (imageId, format, type) => {
    * @param {string} type - The type of the image. "banner" for banner, "logo" for logo, null for product etc.
    */
 
-  // if (type)
-  //   return `https://bringit-images.s3.amazonaws.com/assets/${type}-${imageId}.${format}`;
-  // else
-  //   return `https://bringit-images.s3.amazonaws.com/assets/${imageId}.${format}`;
-  if (type) return `/assets/${type}-${imageId}.${format}`;
-  else return `/assets/${imageId}.${format}`;
+  if (type)
+    return `https://bringit-images.s3.amazonaws.com/assets/${type}-${imageId}.${format}`;
+  else
+    return `https://bringit-images.s3.amazonaws.com/assets/${imageId}.${format}`;
+  // if (type) return `/assets/${type}-${imageId}.${format}`;
+  // else return `/assets/${imageId}.${format}`;
 };
 
 export const isStoreOpen = (start, end) => {

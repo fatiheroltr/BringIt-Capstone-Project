@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
 import Content from "../components/Content";
 import { RestaurantsContext } from "../context/RestaurantsContext";
-import { extractImageUrl, isStoreOpen } from "../utils";
+import { extractImageUrl, isStoreOpen, mobile } from "../utils";
 import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
 import RestaurantBannerSkeleton from "../components/Skeletons/RestaurantBannerSkeleton";
 import styled from "styled-components";
@@ -47,9 +47,11 @@ const Restaurant = () => {
                   restaurant.operation_end
                 )
                   ? "OPEN"
-                  : "CLOSED"}{" "}
-                - {restaurant.operation_start + ":00"} /{" "}
-                {restaurant.operation_end + ":00"}
+                  : "CLOSED"}
+                <MobileStoreHours>
+                  - {restaurant.operation_start + ":00"} /{" "}
+                  {restaurant.operation_end + ":00"}
+                </MobileStoreHours>
               </StoreHours>
             </StoreInfo>
           </BannerContainer>
@@ -113,6 +115,7 @@ const ProductsWrapper = styled.div`
 const ProductsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  ${mobile({ gridTemplateColumns: "repeat(1, 1fr)", gridRowGap: "55px" })};
   grid-column-gap: 75px;
   margin: 30px 0;
   grid-row-gap: 60px;
@@ -130,11 +133,14 @@ const BannerContainer = styled.div`
   position: relative;
   margin-top: 117px;
 
+  ${mobile({ width: "100%", height: "200px" })};
+
   &::after {
     content: "";
     position: absolute;
     width: 100%;
     height: 320px;
+    ${mobile({ height: "200px" })};
     background: rgba(255, 255, 255, 0);
     background: linear-gradient(
       180deg,
@@ -145,6 +151,11 @@ const BannerContainer = styled.div`
   }
 `;
 
+const MobileStoreHours = styled.div`
+  padding-left: 5px;
+  ${mobile({ display: "none" })};
+`;
+
 const Logo = styled.img`
   position: absolute;
   width: 200px;
@@ -153,6 +164,8 @@ const Logo = styled.img`
   left: 70px;
   top: 175px;
   z-index: 1;
+
+  ${mobile({ display: "none" })};
 `;
 
 const StoreInfo = styled.span`
@@ -163,6 +176,7 @@ const StoreInfo = styled.span`
   color: #fff;
   bottom: 20px;
   left: 300px;
+  ${mobile({ bottom: "20px", left: "20px" })};
 `;
 
 const StoreName = styled.span`
@@ -172,6 +186,7 @@ const StoreName = styled.span`
 `;
 
 const StoreHours = styled.span`
+  display: flex;
   font-size: 16px;
   letter-spacing: -0.04em;
   margin-left: 20px;
