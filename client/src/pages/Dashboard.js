@@ -96,7 +96,7 @@ const Dashboard = () => {
               </ProfileRow>
               {isUserDeliverer && (
                 <ProfileRow
-                  id="delivery"
+                  id="deliveries"
                   onClick={(ev) => handleClick(ev.target.id)}
                   activeMenu={activeMenu}
                 >
@@ -158,7 +158,7 @@ const Dashboard = () => {
               <EmptyField>No order? Aren't you hungry?</EmptyField>
             )}
 
-            {activeMenu === "delivery" &&
+            {activeMenu === "deliveries" &&
               jobs &&
               jobs.length > 0 &&
               jobs.map((job) => {

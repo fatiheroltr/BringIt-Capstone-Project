@@ -6,6 +6,7 @@ import { DialogOverlay, DialogContent } from "@reach/dialog";
 import "@reach/dialog/styles.css";
 import { GoScreenFull } from "react-icons/go";
 import LoadingCircle from "../LoadingCircle";
+import { mobile } from "../../utils";
 
 const DashboardOrderCard = ({ order, delivery }) => {
   const [showDialog, setShowDialog] = useState(false);
@@ -184,6 +185,7 @@ const DashboardOrderCard = ({ order, delivery }) => {
             <MapOverlay
               onClick={() => (order.status !== "Pending" || delivery) && open()}
               status={order.status}
+              jobAccepted={jobAccepted}
               delivery={delivery}
             >
               <Overlay>
@@ -285,8 +287,8 @@ const MapContainer = styled.div`
 const Overlay = styled.div`
   position: absolute;
   background-color: rgba(0, 0, 0, 0.6);
-  width: 255px;
-  height: 113px;
+  width: 100%;
+  height: 130px;
   opacity: 0;
   z-index: 99;
   color: #fff;
@@ -300,7 +302,7 @@ const Overlay = styled.div`
 const MapOverlay = styled.div`
   display: relative;
   width: 100%;
-  height: 100%;
+  height: 130px;
   cursor: ${(props) =>
     props.status === "Pending" ? "not-allowed" : "pointer"};
   filter: ${(props) =>
@@ -316,7 +318,10 @@ const MapOverlay = styled.div`
         ? "not-allowed"
         : "pointer"};
     ${Overlay} {
-      opacity: ${(props) => (props.status === "Pending" ? "0" : "1")};
+      opacity: ${(props) =>
+        props.status !== "Pending" || props.jobAccepted || !props.jobAccepted
+          ? "1"
+          : "0"};
     }
   }
 `;

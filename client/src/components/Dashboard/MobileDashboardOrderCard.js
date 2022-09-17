@@ -107,10 +107,18 @@ const MobileDashboardOrderCard = ({ order, delivery }) => {
             <div style={{ flexDirection: "column" }}>
               <BoldText>Name:</BoldText>
               <span>{order.name}</span>
-              <div style={{ marginTop: "10px" }}>
-                <BoldText>Total:</BoldText>
-                <span>${order.total}</span>
-              </div>
+
+              {!delivery ? (
+                <div style={{ marginTop: "10px" }}>
+                  <BoldText>Total:</BoldText>
+                  <span>${order.total}</span>
+                </div>
+              ) : (
+                <div style={{ marginTop: "10px" }}>
+                  <BoldText>Earning:</BoldText>
+                  <span>${(order.fee + order.tip).toFixed(2)}</span>
+                </div>
+              )}
             </div>
 
             <MapOverlay
@@ -277,7 +285,10 @@ const MapOverlay = styled.div`
         ? "not-allowed"
         : "pointer"};
     ${Overlay} {
-      opacity: ${(props) => (props.status === "Pending" ? "0" : "1")};
+      opacity: ${(props) =>
+        props.status !== "Pending" || props.jobAccepted || !props.jobAccepted
+          ? "1"
+          : "0"};
     }
   }
 `;
