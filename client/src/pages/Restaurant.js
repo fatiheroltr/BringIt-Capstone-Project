@@ -10,6 +10,7 @@ import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
 import RestaurantBannerSkeleton from "../components/Skeletons/RestaurantBannerSkeleton";
 import styled from "styled-components";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
+import Redirect from "../components/Redirect";
 
 const Restaurant = () => {
   const { id } = useParams();
@@ -202,5 +203,5 @@ const CategoryName = styled.span`
 // export default Restaurant;
 export default withAuthenticationRequired(Restaurant, {
   // Show a message while the user waits to be redirected to the login page.
-  onRedirecting: () => <div>Redirecting you to the login page...</div>,
+  onRedirecting: () => <Redirect />,
 });

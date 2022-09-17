@@ -8,6 +8,7 @@ import ProductCardSkeleton from "../components/Skeletons/ProductCardSkeleton";
 import styled from "styled-components";
 import Content from "../components/Content";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
+import Redirect from "../components/Redirect";
 
 const SearchResults = () => {
   const { id } = useParams();
@@ -71,8 +72,6 @@ const CategoryName = styled.p`
   margin-bottom: 30px;
 `;
 
-// export default CategoryResults;
 export default withAuthenticationRequired(SearchResults, {
-  // Show a message while the user waits to be redirected to the login page.
-  onRedirecting: () => <div>Redirecting you to the login page...</div>,
+  onRedirecting: () => <Redirect />,
 });

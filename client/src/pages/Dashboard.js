@@ -16,6 +16,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { mobile } from "../utils";
 import MobileDashboardOrderCard from "../components/Dashboard/MobileDashboardOrderCard";
 import MobileDashboardOrderCardSkeleton from "../components/Skeletons/MobileDashboardOrderCardSkeleton";
+import Redirect from "../components/Redirect";
 
 const Dashboard = () => {
   const { user, logout } = useAuth0();
@@ -462,5 +463,5 @@ const MobileWrapper = styled.div`
 `;
 
 export default withAuthenticationRequired(Dashboard, {
-  onRedirecting: () => <div>Redirecting you to the login page...</div>,
+  onRedirecting: () => <Redirect />,
 });

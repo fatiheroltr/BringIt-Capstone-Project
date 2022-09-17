@@ -19,6 +19,7 @@ import {
   RiCheckboxBlankCircleLine,
 } from "react-icons/ri";
 import { mobile } from "../utils";
+import Redirect from "../components/Redirect";
 
 const CategoryResults = () => {
   const { categoryParam } = useParams();
@@ -232,5 +233,5 @@ const CategoryCheckbox = styled.div`
 // export default CategoryResults;
 export default withAuthenticationRequired(CategoryResults, {
   // Show a message while the user waits to be redirected to the login page.
-  onRedirecting: () => <div>Redirecting you to the login page...</div>,
+  onRedirecting: () => <Redirect />,
 });

@@ -15,6 +15,7 @@ import CheckoutTotalSkeleton from "../components/Skeletons/CheckoutTotalSkeleton
 import { FiAlertCircle } from "react-icons/fi";
 import moment from "moment";
 import LoadingCircle from "../components/LoadingCircle";
+import Redirect from "../components/Redirect";
 
 const Checkout = () => {
   const { cart, isCartLoaded, setTimeToUpdateCart, timeToUpdateCart } =
@@ -447,5 +448,5 @@ const TotalContentSection = styled.div`
 `;
 
 export default withAuthenticationRequired(Checkout, {
-  onRedirecting: () => <div>Redirecting you to the login page...</div>,
+  onRedirecting: () => <Redirect />,
 });
