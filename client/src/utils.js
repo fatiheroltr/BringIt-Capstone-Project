@@ -31,6 +31,14 @@ export const isStoreOpen = (start, end) => {
   const endMin = end * 60;
   const nowMin = now.getHours() * 60 + now.getMinutes();
 
-  if (nowMin >= startMin && nowMin <= endMin) return true;
+  if (
+    nowMin >= startMin &&
+    nowMin <= endMin &&
+    now.getDay() !== 0 &&
+    now.getDay() !== 6
+  )
+    return true;
   else return false;
+
+  // return true;
 };

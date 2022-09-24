@@ -4,7 +4,7 @@ import { TbListSearch } from "react-icons/tb";
 import styled from "styled-components";
 import { DialogOverlay, DialogContent } from "@reach/dialog";
 import "@reach/dialog/styles.css";
-import { extractImageUrl, mobile } from "../utils";
+import { extractImageUrl, isStoreOpen, mobile } from "../utils";
 import { CartContext } from "../context/CartContext";
 import LoadingCircle from "./LoadingCircle";
 import { UserContext } from "../context/UserContext";
@@ -237,11 +237,11 @@ const ProductCard = ({ productData, restaurantData }) => {
             </QuantityTool>
             <Button
               disabled={
-                // !isStoreOpen(
-                //   restaurantData.operation_start,
-                //   restaurantData.operation_end
-                // ) ||
-                addingToCart && true
+                !isStoreOpen(
+                  restaurantData.operation_start,
+                  restaurantData.operation_end
+                ) ||
+                (addingToCart && true)
               }
               onClick={handleAddToCart}
             >
@@ -284,11 +284,11 @@ const ProductCard = ({ productData, restaurantData }) => {
         </QuantityTool>
         <Button
           disabled={
-            // !isStoreOpen(
-            //   restaurantData.operation_start,
-            //   restaurantData.operation_end
-            // ) ||
-            addingToCart && true
+            !isStoreOpen(
+              restaurantData.operation_start,
+              restaurantData.operation_end
+            ) ||
+            (addingToCart && true)
           }
           onClick={handleAddToCart}
         >
