@@ -1,6 +1,8 @@
 ![Screen Shot 2022-09-26 at 10 57 06 PM](https://user-images.githubusercontent.com/65243642/192421505-4907c96f-b047-428b-830a-6b6dfebfb0d7.png)
 
-BringIt was my capstone project when I was in the bootcamp. It is a food delivery app with a big difference, it only works in campus!. I envisioned this project in order to create financial support for students and a local convenient tool for campus life.
+BringIt was my capstone project when I was in the bootcamp. I had 4 weeks (part-time) to completed this project and using any styling library was forbidden.
+
+It is a food delivery app with a big difference, it only works in campus!. I envisioned this project in order to create financial support for students and a local convenient tool for campus life.
 
 ### **Live demo : https://bringit.netlify.app/**
 
